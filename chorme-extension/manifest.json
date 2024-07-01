@@ -1,0 +1,23 @@
+{
+  "manifest_version": 3,
+  "name": "Login Tab Extension",
+  "version": "1.0",
+  "description": "An extension that opens a new tab with a login page.",
+  "background": {
+    "service_worker": "background.js"
+  },
+  "permissions": ["tabs"],
+  "action": {
+    "default_popup": "login.html",
+    "default_icon": {
+      "16": "icon.png",
+      "48": "icon.png",
+      "128": "icon.png"
+    }
+  },
+  "icons": {
+    "16": "icon.png",
+    "48": "icon.png",
+    "128": "icon.png"
+  }
+}
