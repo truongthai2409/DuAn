@@ -1,8 +1,9 @@
 import { Route, Routes, useLocation } from "react-router-dom";
-import HomePage from "./pages/home"
+import HomePage from "./pages/Home"
 import MainLayout from './MainLayout/MainLayout'
 import ProductManagement from "./pages/ProductManagement/ProductManagement";
 import Inventory from "./pages/Inventory/Inventory";
+import Profile from "./pages/Profile/Profile";
 
 function App() {
 
@@ -14,6 +15,7 @@ function App() {
         <Route path="/" element={<MainLayout />}>
           <Route path="listOfProducts" element={<ProductManagement />} />
           <Route path="inventory" element={<Inventory />}/>
+          <Route path="profile" element={<Profile />}/>
         </Route>
       </Routes>
     </>
