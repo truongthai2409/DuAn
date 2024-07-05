@@ -1,0 +1,92 @@
+[
+    {
+        "key": 1,
+        "id": "#1231",
+        "image": "/src/assets/images/products/image1.png",
+        "name": "Máy ảnh vip pro",
+        "price": "50,000",
+        "productDescription": "Máy ảnh ngon",
+        "inventory": 100
+    },
+    {
+        "key": 2,
+        "id": "#1232",
+        "image": "/src/assets/images/products/image2.png",
+        "name": "Máy ảnh siêu nét",
+        "price": "60,000",
+        "productDescription": "Máy ảnh chụp siêu rõ",
+        "inventory": 0
+    },  
+    {
+        "key": 3,
+        "id": "#1233",
+        "image": "url",
+        "name": "Máy ảnh chất lượng",
+        "price": "70,000",
+        "productDescription": "Máy ảnh chất lượng cao",
+        "inventory": 100
+    },
+    {
+        "key": 4,
+        "id": "#1234",
+        "image": "url",
+        "name": "Máy ảnh chuyên nghiệp",
+        "price": "80,000",
+        "productDescription": "Máy ảnh dành cho người chuyên nghiệp",
+        "inventory": 100
+    },
+    {
+        "key": 5,
+        "id": "#1235",
+        "image": "url",
+        "name": "Máy ảnh cao cấp",
+        "price": "90,000",
+        "productDescription": "Máy ảnh cao cấp với nhiều tính năng",
+        "inventory": 100
+    },
+    {
+        "key": 6,
+        "id": "#1236",
+        "image": "url",
+        "name": "Máy ảnh mini",
+        "price": "30,000",
+        "productDescription": "Máy ảnh nhỏ gọn và tiện lợi",
+        "inventory": 100
+    },  
+    {
+        "key": 7,
+        "id": "#1237",
+        "image": "url",
+        "name": "Máy ảnh đa năng",
+        "price": "55,000",
+        "productDescription": "Máy ảnh với nhiều chế độ chụp",
+        "inventory": 100
+    },
+    {
+        "key": 8,
+        "id": "#1238",
+        "image": "url",
+        "name": "Máy ảnh cơ bản",
+        "price": "40,000",
+        "productDescription": "Máy ảnh phù hợp cho người mới bắt đầu",
+        "inventory": 100
+    },
+    {
+        "key": 9,
+        "id": "#1239",
+        "image": "url",
+        "name": "Máy ảnh siêu nhỏ",
+        "price": "35,000",
+        "productDescription": "Máy ảnh siêu nhỏ, dễ mang theo",
+        "inventory": 100
+    },
+    {
+        "key": 10,
+        "id": "#12310",
+        "image": "url",
+        "name": "Máy ảnh siêu zoom",
+        "price": "65,000",
+        "productDescription": "Máy ảnh với khả năng zoom tuyệt vời",
+        "inventory": 0
+    }
+]
