@@ -6,6 +6,13 @@ import './App.css'
 function App() {
   const [count, setCount] = useState(0)
 
+  const onclick = async () => {
+    let [tab] = await chorme.tabs.query({active: true});
+    chorme.scripting.executeScript({
+      target: {tabId: tab},
+      func: () => {alert("hello")}
+    })
+  }
   return (
     <>
       <div>
@@ -18,7 +25,7 @@ function App() {
       </div>
       <h1>Vite + React</h1>
       <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
+        <button onClick={() => onclick()}>
           count is {count}
         </button>
         <p>

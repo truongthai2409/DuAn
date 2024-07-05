@@ -1,21 +1,25 @@
 {
   "manifest_version": 3,
-  "name": "My Chrome Extension",
+  "name": "Login Tab Extension",
   "version": "1.0",
-  "description": "Extension lấy thông tin từ trang web",
-  "permissions": ["activeTab", "scripting"],
+  "description": "An extension that opens a new tab with a login page.",
+
+  "permissions": ["tabs"],
   "action": {
-    "default_popup": "popup.html",
+    "default_popup": "index.html",
     "default_icon": {
-      "16": "icons/icon16.png",
-      "48": "icons/icon48.png",
-      "128": "icons/icon128.png"
+      "16": "icon.png",
+      "48": "icon.png",
+      "128": "icon.png"
     }
   },
-  "content_scripts": [
-    {
-      "matches": ["<all_urls>"],
-      "js": ["src/content/content.js"]
-    }
-  ]
+  "host_permissions":[
+    "https://*/*",
+    "http://*/"
+  ],
+  "icons": {
+    "16": "icon.png",
+    "48": "icon.png",
+    "128": "icon.png"
+  }
 }
