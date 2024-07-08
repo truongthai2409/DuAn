@@ -4,6 +4,7 @@ import MainLayout from './MainLayout/MainLayout'
 import ProductManagement from "./pages/ProductManagement/ProductManagement";
 import Inventory from "./pages/Inventory/Inventory";
 import Profile from "./pages/Profile/Profile";
+import LoginPage from "./pages/Login/Login";
 
 function App() {
 
@@ -11,6 +12,7 @@ function App() {
     <>
       {/* <AppRouter /> */}
       <Routes>
+        <Route path="/login" element={<LoginPage />} />
         <Route path="/" element={<HomePage />} />
         <Route path="/" element={<MainLayout />}>
           <Route path="listOfProducts" element={<ProductManagement />} />
