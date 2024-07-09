@@ -5,6 +5,7 @@ import ProductManagement from "./pages/ProductManagement/ProductManagement";
 import Inventory from "./pages/Inventory/Inventory";
 import Profile from "./pages/Profile/Profile";
 import LoginPage from "./pages/Login/Login";
+import RegesterPage from "./pages/Regester/Regester";
 
 function App() {
 
@@ -12,8 +13,9 @@ function App() {
     <>
       {/* <AppRouter /> */}
       <Routes>
-        <Route path="/login" element={<LoginPage />} />
         <Route path="/" element={<HomePage />} />
+        <Route path="/register" element={<RegesterPage />}/>
+        <Route path="/login" element={<LoginPage />} />
         <Route path="/" element={<MainLayout />}>
           <Route path="listOfProducts" element={<ProductManagement />} />
           <Route path="inventory" element={<Inventory />}/>
