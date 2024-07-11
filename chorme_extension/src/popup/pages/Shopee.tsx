@@ -2,6 +2,8 @@ import React, { ReactNode } from "react";
 // import { TiThMenu } from "react-icons/ti";
 import Tabs from '../hooks/Tabs';
 import Header from "../components/Header";
+import ShopeeShop from "../components/shopee/ShopeeShop";
+import ShopeeProduct from "../components/shopee/ShopeeProduct";
 
 type TabItem = {
   label: string;
@@ -9,50 +11,26 @@ type TabItem = {
   children: ReactNode;
 };
 
-
-const Shopee1 = () => {
-  const handleClick = () => {
-    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-      chrome.tabs.sendMessage(
-        tabs[0].id,
-        {
-          action: "getElementByXPath",
-          xpath:
-            '//*[@id="sll2-normal-pdp-main"]/div/div[1]/div/div/section[1]/section[2]/div/div[1]/span',
-        },
-        (response) => {
-          alert(response.textContent);
-        }
-      );
-    });
-  };
-  return (
-    <>
-      <button onClick={handleClick}>Get data</button>
-      <div>Shopee Component</div>
-      {/* <DropDown1 /> */}
-    </>
-  );
-};
-
 const Shopee: React.FC = () => {
   const items: TabItem[] = [
     {
       label: "Shopee",
       key: "1",
-      children: <Shopee1 />,
+      children: <ShopeeShop />,
     },
     {
       label: "Shope detail",
       key: "2",
-      children: <Shopee1 />,
+      children: <ShopeeProduct />,
     },
   ];
 
   return (
     <>
       <Header />
-      <Tabs items={items} />
+      <div className="m-4 bg-white">
+        <Tabs items={items} />
+      </div>
     </>
   );
 };

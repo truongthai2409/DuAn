@@ -1,11 +1,11 @@
 {
     "manifest_version": 3,
-    "name": "react-boilerplate",
+    "name": "Auto Ecommerces Extension",
     "description": "react-boilerplate for chrome extension",
     "version": "1.0.0",
     "action" : {
         "default_popup": "popup.html",
-        "default_title": "React Boilerplate",
+        "default_title": "Auto Ecommerces Extension",
         "default_icon" : "icon.png"
     },
     "chrome_url_overrides": {
@@ -28,7 +28,7 @@
     },
     "content_scripts": [
         {
-            "matches": ["<all_urls>"],
+            "matches": ["https://shopee.vn/*", "https://www.lazada.vn/*","https://banhang.shopee.vn/*","<all_urls>"],
             "js": ["contentScript.js"]
         }
     ]

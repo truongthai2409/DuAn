@@ -1,7 +1,8 @@
 import React, { ReactNode } from "react";
 import Header from "../components/Header";
 import Tabs from "../hooks/Tabs";
-import LazadaShop from "../utils/LazadaShop";
+import LazadaShop from "../components/lazada/LazadaShop";
+import LazadaProduct from "../components/lazada/LazadaProduct";
 
 type TabItem = {
   label: string;
@@ -19,7 +20,7 @@ const Lazada = () => {
     {
       label: "Shop detail",
       key: "2",
-      children: "detail",
+      children: <LazadaProduct />,
     },
   ];
   return (
