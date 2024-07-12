@@ -1,0 +1,101 @@
+[
+    {
+        "key": 1,
+        "id": "#1231",
+        "customer": "thanh",
+        "image": "/src/assets/images/products/image1.png",
+        "name": "Máy ảnh vip pro",
+        "price": "100,000",
+        "quantity": 2,
+        "status": "confirm",
+        "shippingUnit": "Giao hang nhanh"
+    },
+    {
+        "key": 2,
+        "id": "#1232",
+        "customer": "thanh",
+        "image": "/src/assets/images/products/image2.png",
+        "name": "Máy ảnh siêu nét",
+        "price": "120,000",
+        "quantity": 3,
+        "status": "pending",
+        "shippingUnit": "Viettel Post"
+    },
+    {
+        "key": 3,
+        "id": "#1233",
+        "customer": "thanh",
+        "image": "/src/assets/images/products/image3.png",
+        "name": "Máy ảnh chất lượng",
+        "price": "150,000",
+        "quantity": 1,
+        "status": "shipped",
+        "shippingUnit": "VNPost"
+    },    
+    {
+        "key": 4,
+        "id": "#1234",
+        "customer": "thanh",
+        "image": "/src/assets/images/products/image4.png",
+        "name": "Máy ảnh chuyên nghiệp",
+        "price": "200,000",
+        "quantity": 4,
+        "status": "delivered",
+        "shippingUnit": "J&T Express"
+    },
+    {
+        "key": 5,
+        "id": "#1235",
+        "customer": "thanh",
+        "image": "/src/assets/images/products/image5.png",
+        "name": "Máy ảnh cao cấp",
+        "price": "250,000",
+        "quantity": 2,
+        "status": "confirm",
+        "shippingUnit": "Giao hang nhanh"
+    },
+    {
+        "key": 6,
+        "id": "#1236",
+        "customer": "thanh",
+        "image": "/src/assets/images/products/image6.png",
+        "name": "Máy ảnh mini",
+        "price": "80,000",
+        "quantity": 5,
+        "status": "cancelled",
+        "shippingUnit": "Viettel Post"
+    },
+    {
+        "key": 7,
+        "id": "#1237",
+        "customer": "thanh",
+        "image": "/src/assets/images/products/image7.png",
+        "name": "Máy ảnh đa năng",
+        "price": "130,000",
+        "quantity": 3,
+        "status": "confirm",
+        "shippingUnit": "VNPost"
+    },
+    {
+        "key": 8,
+        "id": "#1238",
+        "customer": "thanh",
+        "image": "/src/assets/images/products/image8.png",
+        "name": "Máy ảnh cơ bản",
+        "price": "90,000",
+        "quantity": 2,
+        "status": "shipped",
+        "shippingUnit": "J&T Express"
+    },
+    {
+        "key": 9,
+        "id": "#1239",
+        "customer": "thanh",
+        "image": "/src/assets/images/products/image9.png",
+        "name": "Máy ảnh siêu nhỏ",
+        "price": "70,000",
+        "quantity": 1,
+        "status": "pending",
+        "shippingUnit": "Giao hang nhanh"
+    }
+]
