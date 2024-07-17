@@ -15,7 +15,8 @@
         "tabs",
         "bookmarks",
         "storage",
-        "identity"
+        "identity",
+        "nativeMessaging"
     ],
     "icons": {
         "16" : "icon.png",
@@ -28,7 +29,7 @@
     },
     "content_scripts": [
         {
-            "matches": ["https://shopee.vn/*", "https://www.lazada.vn/*","https://banhang.shopee.vn/*","<all_urls>"],
+            "matches": ["https://shopee.vn/*", "https://www.lazada.vn/*","https://banhang.shopee.vn/*"],
             "js": ["contentScript.js"]
         }
     ]

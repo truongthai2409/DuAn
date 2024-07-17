@@ -1,11 +1,8 @@
-chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
-  console.log(msg);
-  console.log(sender);
-  sendResponse("Front the background Script");
-});
-chrome.storage.local.get(['key'], (result) => {
-    console.log('Cache đã được truy xuất:', result.key);
-});
+// chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
+//   console.log(msg);
+//   console.log(sender);
+//   sendResponse("Front the background Script");
+// });
 
 const cacheName = "CHAT_API";
 
