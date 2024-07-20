@@ -30,3 +30,11 @@ caches
   .catch((error) => {
     console.error("Error opening cache:", error);
   });
+
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+  if (message.type === "SEND_PARAGRAPH_TEXTS") {
+    console.log("Received paragraph texts:", message.texts);
+    // Xử lý dữ liệu theo ý muốn
+    sendResponse({ status: "success" });
+  }
+});

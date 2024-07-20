@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 
 const ShopeeShop: React.FC = () => {
   const [dataList, setDataList] = useState<{ key: string; value: any }[]>([]);
+  // const []
 
   useEffect(() => {
     const messageListener = (message: any, sender: any, sendResponse: any) => {
@@ -21,29 +22,32 @@ const ShopeeShop: React.FC = () => {
     };
   }, []);
 
-  const handleFetchData = () => {
-    console.log("code in shopee component");
-    // console.log(dataList); 
-    // Nghe tin nhắn từ background script
-    chrome.runtime.onMessage.addListener(function (
-      message,
-      sender,
-      sendResponse
-    ) {
-      if (message.action === "updatePopup") {
-        console.log("Dữ liệu nhận được từ background script:", message.data);
-
-        // Hiển thị dữ liệu lên UI
-        let container = document.getElementById("dataContainer");
-        let dataElement = document.createElement("div");
-        dataElement.textContent = `Key: ${
-          message.data.key
-        }, Value: ${JSON.stringify(message.data.value)}`;
-        container.appendChild(dataElement);
-
-        // Gửi phản hồi nếu cần thiết
-        sendResponse({ status: "Đã nhận dữ liệu" });
-      }
+  const handleClick = () => {
+    // Gửi thông điệp đến content script để lấy giá trị của thẻ
+    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+      chrome.tabs.sendMessage(
+        tabs[0].id,
+        { action: 'getProductName', xpath: '//*[@id="sll2-normal-pdp-main"]/div/div[1]/div/div/section[1]/section[2]/div/div[1]/span' },
+       
+        (response) => {
+          console.log(response)
+          alert(response.textContent);
+        }
+      );
+    });
+  };
+  const handleClick1 = () => {
+    // Gửi thông điệp đến content script để lấy giá trị của thẻ
+    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+      chrome.tabs.sendMessage(
+        tabs[0].id,
+        // { action: 'getProductName', xpath: '//*[@id="sll2-normal-pdp-main"]/div/div[1]/div/div/section[1]/section[2]/div/div[1]/span' },
+        { action: 'getPtext'},
+        (response) => {
+          console.log(response)
+          alert(response.textContents);
+        }
+      );
     });
   };
 
@@ -92,20 +96,19 @@ const ShopeeShop: React.FC = () => {
       <button
         type="button"
         id="fetchData"
-        onClick={handleFetchData}
+        onClick={handleClick}
         className="mt-3 text-white bg-gray-600 hover:bg-gray-500 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-xs px-5 py-2.5 text-center"
       >
         Fetch Data from Storage
       </button>
-
-      <div>
-        {dataList.map((item, index) => (
-          <div key={index}>
-            <p>{item.key}</p>: {item.value}
-          </div>
-        ))}
-      </div>
-      <div id="dataContainer"></div>
+      <button
+        type="button"
+        id="fetchData"
+        onClick={handleClick1}
+        className="mt-3 text-white bg-gray-600 hover:bg-gray-500 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-xs px-5 py-2.5 text-center"
+      >
+        Get detail
+      </button>
     </form>
   );
 };
