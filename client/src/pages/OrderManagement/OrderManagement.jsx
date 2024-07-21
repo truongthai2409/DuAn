@@ -1,11 +1,22 @@
 import Header from "../../component/Header/Header"
-import { Table, Button, Select, Row, Col } from "antd"
-import dataProductManagement from '../../data/ProductManagement.json'
-import { useState, useEffect } from "react";
-import './ProductManagement.css'
-import axios from 'axios';
+import { Table, Button, Select, Row, Col, Input } from "antd"
+import dataOrderManagement from '../../data/OrderManagement.json'
+import { useState } from "react";
+import './OrderManagement.css'
 
 const columns = [
+    {
+        title: "ID",
+        dataIndex: "id",
+        width: "auto",
+        align: "center",
+    },
+    {
+        title: "Customer",
+        dataIndex: "customer",
+        width: "auto",
+        align: "center"
+    },
     {
         title: "Image",
         dataIndex: "image",
@@ -26,14 +37,20 @@ const columns = [
         align: "center"
     },
     {
-        title: "Product Description",
-        dataIndex: "productDescription",
+        title: "Quantity",
+        dataIndex: "quantity",
         width: "auto",
         align: "center"
     },
     {
-        title: "Inventory",
-        dataIndex: "inventory",
+        title: "Status",
+        dataIndex: "status",
+        width: "auto",
+        align: "center"
+    },
+    {
+        title: "Shipping Unit",
+        dataIndex: "shippingUnit",
         width: "auto",
         align: "center"
     },
@@ -44,53 +61,37 @@ const columns = [
         align: "center",
         render: () => (
             <div>
-                <Button style={{marginRight: 5}}>View</Button>
+                <Button style={{ marginRight: 5 }}>View</Button>
                 <Button type="primary">Edit</Button>
-                <Button type="primary" danger style={{marginLeft: 5}}>Delete</Button>
+                <Button type="primary" danger style={{ marginLeft: 5 }}>Delete</Button>
             </div>
         ),
     },
 ];
 
-const ProductManagement = () => {
-    const [dataTable, setDataTable] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
+const OrderManagement = () => {
+    const [dataTable, setDataTable] = useState(dataOrderManagement);
     const [filter, setFilter] = useState({
         id: "",
         name: "",
-        price: "",
-        productDescription: ""
+        customer: "",
+        status: "",
+        shippingUnit: ""
     });
 
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const response = await axios.get('http://localhost:5000/product/all-product');
-                setDataTable(response.data);
-                setLoading(false);
-                console.log(response);
-            } catch (error) {
-                setError(error);
-                setLoading(false);
-            }
-        };
-        fetchData();
-    }, []);
-
-    const optionsProductID = dataProductManagement.map((item) => ({
+    const optionsProductID = dataOrderManagement.map((item) => ({
         value: item.id,
         label: item.id,
     }));
 
-    const optionsProductName = dataProductManagement.map((item) => ({
+    const optionsProductName = dataOrderManagement.map((item) => ({
         value: item.name,
         label: item.name,
     }));
 
-    const optionsProductPrice = dataProductManagement.map((item) => ({
-        value: item.price,
-        label: item.price,
+    const optionsProductCustomer = dataOrderManagement.map((item) => ({
+        value: item.customer,
+        label: item.customer,
     }));
 
     const handleChangeFilterProductID = (value) => {
@@ -107,16 +108,16 @@ const ProductManagement = () => {
         }));
     };
 
-    const handleChangeFilterProductPrice = (value) => {
+    const handleChangeFilterProductCustomer = (value) => {
         setFilter((prevState) => ({
             ...prevState,
-            price: value,
+            customer: value,
         }));
     };
 
     const handleSearch = () => {
         // Lọc theo tất cả các trường có giá trị
-        const filteredData = dataProductManagement.filter((item) => {
+        const filteredData = dataOrderManagement.filter((item) => {
             let isValid = true;
             for (const key in filter) {
                 if (filter[key] && !item[key].includes(filter[key])) {
@@ -134,20 +135,21 @@ const ProductManagement = () => {
         setFilter({
             id: "",
             name: "",
-            price: "",
-            productDescription: ""
+            customer: "",
+            status: "",
+            shippingUnit: ""
         });
-        setDataTable(dataProductManagement);
+        setDataTable(dataOrderManagement);
     };
 
 
     return (
         <div className="pm-content">
-            <Header title='List of Products' />
+            <Header title='List of Orders' />
             <div className="pm-filter">
                 <Row>
                     <Col span={4}>
-                        <Select
+                        {/* <Select
                             style={{
                                 height: "32px",
                                 width: "95%",
@@ -161,10 +163,22 @@ const ProductManagement = () => {
                             options={optionsProductID}
                             onChange={handleChangeFilterProductID}
                             value={filter.id || null}
+                        /> */}
+                        <Input
+                            style={{
+                                height: "32px",
+                                width: "95%",
+
+                                fontSize: "15px",
+                            }}
+                            defaultValue=""
+                            placeholder={"Enter Product's ID"}
+                            onChange={e => handleChangeFilterProductID(e.target.value)}
+                            value={filter.id || null}
                         />
                     </Col>
                     <Col span={8}>
-                        <Select
+                        {/* <Select
                             style={{
                                 height: "32px",
                                 width: "95%",
@@ -176,6 +190,18 @@ const ProductManagement = () => {
                             placeholder={"Enter Product's Name"}
                             options={optionsProductName}
                             onChange={handleChangeFilterProductName}
+                            value={filter.name || null}
+                        /> */}
+                        <Input
+                            style={{
+                                height: "32px",
+                                width: "95%",
+
+                                fontSize: "15px",
+                            }}
+                            defaultValue=""
+                            placeholder={"Enter Product's Name"}
+                            onChange={e => handleChangeFilterProductName(e.target.value)}
                             value={filter.name || null}
                         />
                     </Col>
@@ -189,10 +215,10 @@ const ProductManagement = () => {
                             className="select-placeholder"
                             showSearch
                             defaultValue=""
-                            placeholder={"Enter Product's Price"}
-                            options={optionsProductPrice}
-                            onChange={handleChangeFilterProductPrice}
-                            value={filter.price || null}
+                            placeholder={"Enter Product's Customer"}
+                            options={optionsProductCustomer}
+                            onChange={handleChangeFilterProductCustomer}
+                            value={filter.customer || null}
                         />
                     </Col>
                     <Col span={5} offset={2}>
@@ -220,4 +246,4 @@ const ProductManagement = () => {
     )
 }
 
-export default ProductManagement
+export default OrderManagement

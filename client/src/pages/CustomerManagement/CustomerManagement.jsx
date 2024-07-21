@@ -1,17 +1,15 @@
 import Header from "../../component/Header/Header"
 import { Table, Button, Select, Row, Col } from "antd"
-import dataProductManagement from '../../data/ProductManagement.json'
-import { useState, useEffect } from "react";
-import './ProductManagement.css'
-import axios from 'axios';
+import dataCustomerManagement from '../../data/CustomerManagement.json'
+import { useState } from "react";
+import './CustomerManagement.css'
 
 const columns = [
     {
-        title: "Image",
-        dataIndex: "image",
+        title: "ID",
+        dataIndex: "id",
         width: "auto",
         align: "center",
-        render: (text) => <img style={{ margin: 'auto' }} width={60} height={60} src={text} alt="image" />
     },
     {
         title: "Name",
@@ -20,20 +18,14 @@ const columns = [
         align: "center"
     },
     {
-        title: "Price",
-        dataIndex: "price",
+        title: "Type",
+        dataIndex: "type",
         width: "auto",
         align: "center"
     },
     {
-        title: "Product Description",
-        dataIndex: "productDescription",
-        width: "auto",
-        align: "center"
-    },
-    {
-        title: "Inventory",
-        dataIndex: "inventory",
+        title: "Level",
+        dataIndex: "level",
         width: "auto",
         align: "center"
     },
@@ -52,10 +44,8 @@ const columns = [
     },
 ];
 
-const ProductManagement = () => {
-    const [dataTable, setDataTable] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
+const CustomerManagement = () => {
+    const [dataTable, setDataTable] = useState(dataCustomerManagement);
     const [filter, setFilter] = useState({
         id: "",
         name: "",
@@ -63,32 +53,17 @@ const ProductManagement = () => {
         productDescription: ""
     });
 
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const response = await axios.get('http://localhost:5000/product/all-product');
-                setDataTable(response.data);
-                setLoading(false);
-                console.log(response);
-            } catch (error) {
-                setError(error);
-                setLoading(false);
-            }
-        };
-        fetchData();
-    }, []);
-
-    const optionsProductID = dataProductManagement.map((item) => ({
+    const optionsProductID = dataCustomerManagement.map((item) => ({
         value: item.id,
         label: item.id,
     }));
 
-    const optionsProductName = dataProductManagement.map((item) => ({
+    const optionsProductName = dataCustomerManagement.map((item) => ({
         value: item.name,
         label: item.name,
     }));
 
-    const optionsProductPrice = dataProductManagement.map((item) => ({
+    const optionsProductPrice = dataCustomerManagement.map((item) => ({
         value: item.price,
         label: item.price,
     }));
@@ -116,7 +91,7 @@ const ProductManagement = () => {
 
     const handleSearch = () => {
         // Lọc theo tất cả các trường có giá trị
-        const filteredData = dataProductManagement.filter((item) => {
+        const filteredData = dataCustomerManagement.filter((item) => {
             let isValid = true;
             for (const key in filter) {
                 if (filter[key] && !item[key].includes(filter[key])) {
@@ -135,15 +110,14 @@ const ProductManagement = () => {
             id: "",
             name: "",
             price: "",
-            productDescription: ""
         });
-        setDataTable(dataProductManagement);
+        setDataTable(dataCustomerManagement);
     };
 
 
     return (
         <div className="pm-content">
-            <Header title='List of Products' />
+            <Header title='List of Customers' />
             <div className="pm-filter">
                 <Row>
                     <Col span={4}>
@@ -220,4 +194,4 @@ const ProductManagement = () => {
     )
 }
 
-export default ProductManagement
+export default CustomerManagement
