@@ -1,8 +1,9 @@
 import Header from "../../component/Header/Header"
 import { Table, Button, Select, Row, Col } from "antd"
 import dataProductManagement from '../../data/ProductManagement.json'
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import './ProductManagement.css'
+import axios from 'axios';
 
 const columns = [
     {
@@ -52,13 +53,30 @@ const columns = [
 ];
 
 const ProductManagement = () => {
-    const [dataTable, setDataTable] = useState(dataProductManagement);
+    const [dataTable, setDataTable] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
     const [filter, setFilter] = useState({
         id: "",
         name: "",
         price: "",
         productDescription: ""
     });
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await axios.get('http://localhost:5000/product/all-product');
+                setDataTable(response.data);
+                setLoading(false);
+                console.log(response);
+            } catch (error) {
+                setError(error);
+                setLoading(false);
+            }
+        };
+        fetchData();
+    }, []);
 
     const optionsProductID = dataProductManagement.map((item) => ({
         value: item.id,

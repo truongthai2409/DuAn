@@ -39,4 +39,7 @@ app.get("/admin", Verify, VerifyRole, (req, res) => {
 const Auth = require('./auth.js');
 app.use('/auth', Auth);
 
+const Product = require('./product.js')
+app.use('/product', Product)
+
 module.exports = app;
