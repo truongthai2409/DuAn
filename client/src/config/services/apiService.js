@@ -26,3 +26,13 @@ export const register = async (data) => {
         throw error;
     }
 };
+
+export const logout = async () => {
+    try {
+        const response = await http.get('/auth/logout');
+        return response;
+    } catch (error) {
+        console.error('Error logout in', error);
+        throw error;
+    }
+};

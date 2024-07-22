@@ -1,23 +1,17 @@
 import { Navigate, Route, Routes, useLocation } from "react-router-dom";
-import HomePage from "./pages/home/index"
+import { Toaster } from 'sonner'
 import MainLayout from './MainLayout/MainLayout'
+import HomePage from "./pages/Home"
 import ProductManagement from "./pages/ProductManagement/ProductManagement";
 import Inventory from "./pages/Inventory/Inventory";
 import Profile from "./pages/Profile/Profile";
 import LoginPage from "./pages/Login/Login";
-// import PrivateRoute from "./pages/Login/PrivateRoute.js";
 import RegesterPage from "./pages/Regester/Regester";
 import OrderManagement from "./pages/OrderManagement/OrderManagement";
 import CustomerManagement from "./pages/CustomerManagement/CustomerManagement";
-import { Toaster } from 'sonner'
-import { useAuth } from "./hooks/useAuth";
+import PrivateRoute from "./config/routing/PrivateRoute";
 
 function App() {
-  const PrivateRoute = ({ children }) => {
-    const { user } = useAuth();
-  
-    return user ? children : <Navigate to="/login" />;
-  };
   return (
     <>
       {/* <AppRouter /> */}
