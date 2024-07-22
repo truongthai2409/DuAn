@@ -13,6 +13,7 @@ import {
     Radio,
     Tabs,
 } from 'antd'
+import { useTranslation } from 'react-i18next';
 
 const User = () => {
 
@@ -38,7 +39,7 @@ const User = () => {
                 <Form.Item label="Email">
                     <Input placeholder='email' type='email' disabled />
                 </Form.Item>
-                <Form.Item label="Dender">
+                <Form.Item label="Gender">
                     <Radio.Group>
                         <Radio value="men"> Men </Radio>
                         <Radio value="women"> Women </Radio>
@@ -98,23 +99,26 @@ const Shop = () => {
         </>
     )
 }
-const item = [
-    {
-        label: 'My Profile',
-        key: 1,
-        children: <User />,
-    },
-    {
-        label: 'Shop Profile',
-        key: 2,
-        children: <Shop />,
-    },
 
-]
 
 
 
 const Profile = () => {
+    
+    const { t } = useTranslation(['profile', 'login']);
+    let item = [
+        {
+            label: `${t('profileUserTL')}`,
+            key: 1,
+            children: <User />,
+        },
+        {
+            label: `${t('checkEmailTL', { ns: 'login'})}`,
+            key: 2,
+            children: <Shop />,
+        },
+    
+    ]
     return (
         <>
             <Header title="Profile" />
