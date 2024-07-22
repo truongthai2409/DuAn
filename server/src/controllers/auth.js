@@ -62,7 +62,7 @@ exports.Login = async (req, res) => {
             });
         // if user exists
         // validate password
-        const isPasswordValid = bcrypt.compare(
+        const isPasswordValid = await bcrypt.compare(
             `${req.body.password}`,
             user.password
         );

@@ -4,7 +4,8 @@ const http = axios.create({
     baseURL: import.meta.env.VITE_API,
     headers: {
         "Content-Type": "application/json",
-    }
+    },
+    withCredentials: true
 });
 
 http.interceptors.request.use(async (config) => config);

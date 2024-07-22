@@ -1,5 +1,5 @@
 import { Navigate, Route, Routes, useLocation } from "react-router-dom";
-import HomePage from "./pages/Home"
+import HomePage from "./pages/home/index"
 import MainLayout from './MainLayout/MainLayout'
 import ProductManagement from "./pages/ProductManagement/ProductManagement";
 import Inventory from "./pages/Inventory/Inventory";
