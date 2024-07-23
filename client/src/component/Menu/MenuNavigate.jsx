@@ -78,7 +78,7 @@ const MenuNavigate = ({ buttonClick }) => {
             children: [
                 {
                     key: 'listOfCustomers',
-                    label: t('listOfCustomerTL'),
+                    label: t('listOfCustomersTL'),
                 },
                 {
                     key: 'customerCare',
