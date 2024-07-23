@@ -4,53 +4,9 @@ import dataProductManagement from '../../data/ProductManagement.json'
 import { useState, useEffect } from "react";
 import './ProductManagement.css'
 import axios from 'axios';
+import { useTranslation } from "react-i18next";
 
-const columns = [
-    {
-        title: "Image",
-        dataIndex: "image",
-        width: "auto",
-        align: "center",
-        render: (text) => <img style={{ margin: 'auto' }} width={60} height={60} src={text} alt="image" />
-    },
-    {
-        title: "Name",
-        dataIndex: "name",
-        width: "auto",
-        align: "center"
-    },
-    {
-        title: "Price",
-        dataIndex: "price",
-        width: "auto",
-        align: "center"
-    },
-    {
-        title: "Product Description",
-        dataIndex: "productDescription",
-        width: "auto",
-        align: "center"
-    },
-    {
-        title: "Inventory",
-        dataIndex: "inventory",
-        width: "auto",
-        align: "center"
-    },
-    {
-        title: "Button",
-        dataIndex: "button",
-        width: "auto",
-        align: "center",
-        render: () => (
-            <div>
-                <Button style={{marginRight: 5}}>View</Button>
-                <Button type="primary">Edit</Button>
-                <Button type="primary" danger style={{marginLeft: 5}}>Delete</Button>
-            </div>
-        ),
-    },
-];
+
 
 const ProductManagement = () => {
     const [dataTable, setDataTable] = useState([]);
@@ -62,6 +18,7 @@ const ProductManagement = () => {
         price: "",
         productDescription: ""
     });
+    const { t } = useTranslation('function');
 
     useEffect(() => {
         const fetchData = async () => {
@@ -140,6 +97,52 @@ const ProductManagement = () => {
         setDataTable(dataProductManagement);
     };
 
+    const columns = [
+        {
+            title: t('imageTL'),
+            dataIndex: "image",
+            width: "auto",
+            align: "center",
+            render: (text) => <img style={{ margin: 'auto' }} width={60} height={60} src={text} alt="image" />
+        },
+        {
+            title: t('nameTL'),
+            dataIndex: "name",
+            width: "auto",
+            align: "center"
+        },
+        {
+            title: t('priceTL'),
+            dataIndex: "price",
+            width: "auto",
+            align: "center"
+        },
+        {
+            title:  t('productDescriptionTL'),
+            dataIndex: "productDescription",
+            width: "auto",
+            align: "center"
+        },
+        {
+            title: t('inventoryTL'),
+            dataIndex: "inventory",
+            width: "auto",
+            align: "center"
+        },
+        {
+            title: t('buttonTL'),
+            dataIndex: "button",
+            width: "auto",
+            align: "center",
+            render: () => (
+                <div>
+                    <Button style={{marginRight: 5}}>View</Button>
+                    <Button type="primary">Edit</Button>
+                    <Button type="primary" danger style={{marginLeft: 5}}>Delete</Button>
+                </div>
+            ),
+        },
+    ];
 
     return (
         <div className="pm-content">
@@ -196,8 +199,8 @@ const ProductManagement = () => {
                         />
                     </Col>
                     <Col span={5} offset={2}>
-                        <Button style={{ backgroundColor: '#26a69a', color: '#fff' }} onClick={handleSearch}>Filter</Button>
-                        <Button style={{ marginLeft: 10 }} onClick={handleCleanFilterButton} type="primary" danger>Clear</Button>
+                        <Button style={{ backgroundColor: '#26a69a', color: '#fff' }} onClick={handleSearch}>{t('filterTL')}</Button>
+                        <Button style={{ marginLeft: 10 }} onClick={handleCleanFilterButton} type="primary" danger>{t('clearTL')}</Button>
                     </Col>
                 </Row>
             </div>

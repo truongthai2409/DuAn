@@ -3,71 +3,8 @@ import { Table, Button, Select, Row, Col, Input } from "antd"
 import dataOrderManagement from '../../data/OrderManagement.json'
 import { useState } from "react";
 import './OrderManagement.css'
+import { useTranslation } from "react-i18next";
 
-const columns = [
-    {
-        title: "ID",
-        dataIndex: "id",
-        width: "auto",
-        align: "center",
-    },
-    {
-        title: "Customer",
-        dataIndex: "customer",
-        width: "auto",
-        align: "center"
-    },
-    {
-        title: "Image",
-        dataIndex: "image",
-        width: "auto",
-        align: "center",
-        render: (text) => <img style={{ margin: 'auto' }} width={60} height={60} src={text} alt="image" />
-    },
-    {
-        title: "Name",
-        dataIndex: "name",
-        width: "auto",
-        align: "center"
-    },
-    {
-        title: "Price",
-        dataIndex: "price",
-        width: "auto",
-        align: "center"
-    },
-    {
-        title: "Quantity",
-        dataIndex: "quantity",
-        width: "auto",
-        align: "center"
-    },
-    {
-        title: "Status",
-        dataIndex: "status",
-        width: "auto",
-        align: "center"
-    },
-    {
-        title: "Shipping Unit",
-        dataIndex: "shippingUnit",
-        width: "auto",
-        align: "center"
-    },
-    {
-        title: "Button",
-        dataIndex: "button",
-        width: "auto",
-        align: "center",
-        render: () => (
-            <div>
-                <Button style={{ marginRight: 5 }}>View</Button>
-                <Button type="primary">Edit</Button>
-                <Button type="primary" danger style={{ marginLeft: 5 }}>Delete</Button>
-            </div>
-        ),
-    },
-];
 
 const OrderManagement = () => {
     const [dataTable, setDataTable] = useState(dataOrderManagement);
@@ -78,6 +15,7 @@ const OrderManagement = () => {
         status: "",
         shippingUnit: ""
     });
+    const { t } = useTranslation('function');
 
     const optionsProductID = dataOrderManagement.map((item) => ({
         value: item.id,
@@ -141,7 +79,70 @@ const OrderManagement = () => {
         });
         setDataTable(dataOrderManagement);
     };
-
+    const columns = [
+        {
+            title: "ID",
+            dataIndex: "id",
+            width: "auto",
+            align: "center",
+        },
+        {
+            title: t('customerTL'),
+            dataIndex: "customer",
+            width: "auto",
+            align: "center"
+        },
+        {
+            title: t('imageTL'),
+            dataIndex: "image",
+            width: "auto",
+            align: "center",
+            render: (text) => <img style={{ margin: 'auto' }} width={60} height={60} src={text} alt="image" />
+        },
+        {
+            title: t('nameTL'),
+            dataIndex: "name",
+            width: "auto",
+            align: "center"
+        },
+        {
+            title: t('priceTL'),
+            dataIndex: "price",
+            width: "auto",
+            align: "center"
+        },
+        {
+            title: t('quantityTL'),
+            dataIndex: "quantity",
+            width: "auto",
+            align: "center"
+        },
+        {
+            title: t('statusTL'),
+            dataIndex: "status",
+            width: "auto",
+            align: "center"
+        },
+        {
+            title: t('shippingUnit'),
+            dataIndex: "shippingUnit",
+            width: "auto",
+            align: "center"
+        },
+        {
+            title: t('buttonTL'),
+            dataIndex: "button",
+            width: "auto",
+            align: "center",
+            render: () => (
+                <div>
+                    <Button style={{ marginRight: 5 }}>View</Button>
+                    <Button type="primary">Edit</Button>
+                    <Button type="primary" danger style={{ marginLeft: 5 }}>Delete</Button>
+                </div>
+            ),
+        },
+    ];
 
     return (
         <div className="pm-content">
@@ -222,8 +223,8 @@ const OrderManagement = () => {
                         />
                     </Col>
                     <Col span={5} offset={2}>
-                        <Button style={{ backgroundColor: '#26a69a', color: '#fff' }} onClick={handleSearch}>Filter</Button>
-                        <Button style={{ marginLeft: 10 }} onClick={handleCleanFilterButton} type="primary" danger>Clear</Button>
+                        <Button style={{ backgroundColor: '#26a69a', color: '#fff' }} onClick={handleSearch}>{t('filterTL')}</Button>
+                        <Button style={{ marginLeft: 10 }} onClick={handleCleanFilterButton} type="primary" danger>{t('clearTL')}</Button>
                     </Col>
                 </Row>
             </div>

@@ -1,3 +1,16 @@
 export const FUNCTION_EN = {
-    
+    filterTL: 'Filter',
+    clearTL: 'Clear',
+    imageTL: 'Image',
+    nameTL: 'Name',
+    priceTL: 'Price',
+    productDescriptionTL: 'Product Description',
+    inventoryTL: 'Inventory',
+    buttonTL: 'Button',
+    customerTL: 'Customer',
+    quantityTL: 'Quantity',
+    statusTL: 'Status',
+    shippingUnit: 'Shipping Unit',
+    typeTL: 'Type',
+    levelTL: 'Level',
 }
