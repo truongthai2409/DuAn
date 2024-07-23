@@ -17,8 +17,10 @@ import logo from "../../assets/images/logo.png";
 import { useNavigate } from 'react-router-dom'
 import { useState } from "react";
 import useViewport from "../../hooks/useViewport";
+import { useTranslation } from "react-i18next";
 
 const MenuNavigate = ({ buttonClick }) => {
+    const { t } = useTranslation('main');
     // When width of page <= 1024 it will return true for isMobile variable
     const viewPort = useViewport()
     const isMobile = viewPort.width <= 1024
@@ -40,88 +42,88 @@ const MenuNavigate = ({ buttonClick }) => {
     const items = [
         {
             key: 'home',
-            label: 'Home',
+            label: t('homeTL'),
             icon: <HomeOutlined />,
         },
         {
             key: 'productManagement',
-            label: 'Product Management',
+            label: t('productManagementTL'),
             icon: <ProductOutlined />,
             children: [
                 {
                     key: 'listOfProducts',
-                    label: 'List of Products',
+                    label: t('listOfProductsTL'),
                 },
                 {
                     key: 'inventory',
-                    label: 'Inventory',
+                    label: t('inventoryTL'),
                 },
             ],
         },
         {
             key: 'orderManagement',
-            label: 'Order Management',
+            label: t('orderManagementTL'),
             icon: <ContainerOutlined />,
             children: [
                 {
                     key: 'listOfOrders',
-                    label: 'List of Orders',
+                    label: t('listOfOrdersTL'),
                 },
             ],
         },
         {
             key: 'customerManagement',
-            label: 'Customer Management',
+            label: t('customerManagementTL'),
             icon: <UserOutlined />,
             children: [
                 {
                     key: 'listOfCustomers',
-                    label: 'List of Customers',
+                    label: t('listOfCustomerTL'),
                 },
                 {
                     key: 'customerCare',
-                    label: 'Customer Care'
+                    label: t('customerCareTL'),
                 }
             ],
         },
         {
             key: 'reportingAndAnalysis',
-            label: 'Reporting and Analysis',
+            label: t('reportingAndAnalysisTL'),
             icon: <FileDoneOutlined />,
             children: [
                 {
                     key: 'salesReport',
-                    label: 'Sales Report',
+                    label: t('salesReportTL'),
                 },
                 {
                     key: 'performanceAnalysis',
-                    label: 'Performance Analysis'
+                    label: t('performanceAnalysisTL'),
                 }
             ],
         },
         {
             key: 'inventoryManagement',
-            label: 'Inventory Management',
+            label: t('inventoryManagementTL'),
             icon: <DropboxOutlined />,
             children: [
                 {
                     key: 'export-import-warehouse',
-                    label: 'Export/Import Warehouse',
+                    label: t('exportImportWarehouseTL'),
                 },
                 {
                     key: 'warehouseInventory',
-                    label: 'Warehouse Inventory'
+                    label: t('warehouseInventoryTL'),
                 }
             ],
         },
         {
             key: 'shippingIntegration',
-            label: 'Shipping Integration',
+            label: t('shippingIntegrationTL'),
             icon: <TruckOutlined />,
         },
         {
             key: 'notification',
-            label: 'Notification',
+            label: t('notificationTL'),
             icon: <NotificationOutlined />,
         },
     ];

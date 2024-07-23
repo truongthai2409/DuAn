@@ -145,7 +145,7 @@ const Inventory = () => {
 
     return (
         <div>
-            <Header title='Inventory' />
+            <Header title='inventoryTL' />
             <div className="pm-filter">
                 <Row>
                     <Col span={4}>

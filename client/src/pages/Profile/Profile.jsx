@@ -105,7 +105,7 @@ const Shop = () => {
 
 const Profile = () => {
     
-    const { t } = useTranslation(['profile', 'login']);
+    const { t } = useTranslation('profile');
     let item = [
         {
             label: `${t('profileUserTL')}`,
@@ -113,7 +113,7 @@ const Profile = () => {
             children: <User />,
         },
         {
-            label: `${t('checkEmailTL', { ns: 'login'})}`,
+            label: `${t('profileShopTL', { ns: 'profile'})}`,
             key: 2,
             children: <Shop />,
         },
@@ -121,7 +121,7 @@ const Profile = () => {
     ]
     return (
         <>
-            <Header title="Profile" />
+            <Header title="profileTL" />
             <div className="pm-table profile">
                 {/* <h1>Profile</h1> */}
                 <Tabs items={item} />

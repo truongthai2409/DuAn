@@ -145,7 +145,7 @@ const OrderManagement = () => {
 
     return (
         <div className="pm-content">
-            <Header title='List of Orders' />
+            <Header title='listOfOrdersTL' />
             <div className="pm-filter">
                 <Row>
                     <Col span={4}>

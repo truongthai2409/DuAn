@@ -117,7 +117,7 @@ const CustomerManagement = () => {
 
     return (
         <div className="pm-content">
-            <Header title='List of Customers' />
+            <Header title='listOfCustomersTL' />
             <div className="pm-filter">
                 <Row>
                     <Col span={4}>

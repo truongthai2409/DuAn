@@ -1,0 +1,21 @@
+export const MAIN_VI = {
+    profileTL: 'Hồ sơ',
+    homeTL: 'Trang chủ',
+    productManagementTL: 'Quản lý sản phẩm',
+    listOfProductsTL: 'Danh sách sản phẩm',
+    inventoryTL: 'Hàng tồn kho',
+    orderManagementTL: 'Quản lý đơn hàng',
+    listOfOrdersTL: 'Danh sách đơn hàng',
+    customerManagementTL: 'Quản lý khách hàng',
+    listOfCustomersTL: 'Danh sách khách hàng',
+    customerCareTL: 'Chăm sóc khách hàng',
+    reportingAndAnalysisTL: 'Báo cáo và phân tích',
+    salesReportTL: 'Báo cáo khách hàng',
+    performanceAnalysisTL: 'Phân tích hiệu suất',
+    inventoryManagementTL: 'Quản lý kho hàng',
+    exportImportWarehouseTL: 'Xuất/Nhập kho',
+    warehouseInventoryTL: 'Kiểm kê kho',
+    shippingIntegrationTL: 'Đơn vị vận chuyển',
+    notificationTL: 'Thông báo',
+}
+

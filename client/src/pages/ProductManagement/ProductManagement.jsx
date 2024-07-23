@@ -143,7 +143,7 @@ const ProductManagement = () => {
 
     return (
         <div className="pm-content">
-            <Header title='List of Products' />
+            <Header title='listOfProductsTL' />
             <div className="pm-filter">
                 <Row>
                     <Col span={4}>
