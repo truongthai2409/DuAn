@@ -1,10 +1,13 @@
 
 const { MongoClient, ServerApiVersion } = require('mongodb')
+const { URI } = require("../config/index");
+
+
 class DatabaseService {
   client
   db
   constructor() {
-    this.client = new MongoClient('mongodb://0.0.0.0:27017', {
+    this.client = new MongoClient(URI, {
       serverApi: {
         version: ServerApiVersion.v1,
         strict: false,

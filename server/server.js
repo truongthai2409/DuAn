@@ -2,7 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const { createServer } = require("http")
-const { PORT, URI } = require("./src/config/index.js");
+const { PORT } = require("./src/config/index.js");
 const { db } = require('./src/services/db.service');
 const authRouters = require("./src/routes/auth.route.js");
 
