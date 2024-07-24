@@ -2,17 +2,13 @@ const User = require("../models/User.js");
 const bcrypt = require("bcrypt");
 const Blacklist = require("../models/Blacklist.js")
 
-/**
- * @route POST v1/auth/register
- * @desc Registers a user
- * @access Public
- */
 
-exports.Register = async (req, res) => {
+exports.registerController = async (req, res) => {
     // get required variables from request body
     // using es6 object destructing
     const { first_name, last_name, email, password } = req.body;
     try {
+        console.log({ first_name, last_name, email, password })
         // create an instance of a user
         const newUser = new User({
             first_name,
@@ -47,7 +43,7 @@ exports.Register = async (req, res) => {
     res.end();
 }
 
-exports.Login = async (req, res) => {
+exports.loginController = async (req, res) => {
     // Get variables for the login process
     const { email } = req.body;
     try {
@@ -106,7 +102,7 @@ exports.Login = async (req, res) => {
     res.end();
 }
 
-exports.Logout = async (req, res) => {
+exports.logoutController = async (req, res) => {
     try {
       const authHeader = req.headers['cookie']; // get the session cookie from request header
       if (!authHeader) return res.sendStatus(204); // No content

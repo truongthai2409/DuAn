@@ -2,7 +2,7 @@ const express = require("express"); // import the express module
 
 const app = express(); // Create an app object
 
-const { Verify, VerifyRole } = require("../middleware/verify.js")
+const { Verify, VerifyRole } = require("../middlewares/verify.js")
 
 app.disable("x-powered-by"); // Reduce fingerprinting (optional)
 
@@ -36,10 +36,13 @@ app.get("/admin", Verify, VerifyRole, (req, res) => {
     });
 });
 
-const Auth = require('./auth.js');
-app.use('/auth', Auth);
+// const Auth = require('./auth.js');
+// app.use('/auth', Auth);
 
-const Product = require('./product.js')
+const Product = require('./product.route.js');
+const userRouter = require("./user.route.js");
 app.use('/product', Product)
 
+
+app.use('/api', userRouter)
 module.exports = app;
