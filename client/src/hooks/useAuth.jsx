@@ -8,7 +8,7 @@ export const AuthProvider = ({ children }) => {
     const [loading, setLoading] = useState(true); 
 
     useEffect(() => {
-        const token = Cookies.get('authToken');
+        const token = sessionStorage.getItem('authToken');
         if (token) {
             const userData = { name: 'User' }; 
             setUser(userData);
@@ -18,12 +18,12 @@ export const AuthProvider = ({ children }) => {
 
     const loginAuth = (userData) => {
         setUser(userData);
-        Cookies.set('authToken', userData.token);
+        sessionStorage.setItem('authToken', userData.token);
     };
 
     const logoutAuth = () => {
         setUser(null);
-        Cookies.remove('authToken');
+        sessionStorage.removeItem('authToken');
     };
 
     return (

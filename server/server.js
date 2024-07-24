@@ -4,6 +4,7 @@ const cookieParser = require("cookie-parser");
 const mongoose = require("mongoose");
 const { PORT, URI } = require("./src/config/index.js");
 const App = require("./src/routes/index.js");
+const path = require('path');
 
 // === 1 - CREATE SERVER ===
 const server = express();
@@ -18,6 +19,9 @@ server.disable("x-powered-by"); //Reduce fingerprinting
 server.use(cookieParser());
 server.use(express.urlencoded({ extended: false }));
 server.use(express.json());
+
+// Phục vụ các tệp tĩnh từ thư mục 'uploads'
+server.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // === 2 - CONNECT DATABASE ===
 // Set up mongoose's promise to global promise

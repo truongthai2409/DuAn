@@ -1,9 +1,22 @@
 const express = require("express");
-const { Register, Login, Logout } = require("../controllers/auth.js");
+const { Register, Login, Logout, ProfileUser, UpdateProfile } = require("../controllers/auth.js");
 const Validate = require("../middleware/validate.js");
 const { check } = require("express-validator");
+const { Verify } = require("../middleware/verify.js");
+const multer = require('multer');
 
 const router = express.Router();
+
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, 'uploads/'); // Thư mục để lưu trữ tệp tải lên
+    },
+    filename: function (req, file, cb) {
+        cb(null, `${Date.now()}-${file.originalname}`); // Đặt tên tệp tải lên
+    }
+});
+
+const upload = multer({ storage: storage });
 
 // Register route -- POST request
 router.post(
@@ -44,5 +57,14 @@ router.post(
 );
 
 router.get('/logout', Logout);
+
+router.get('/profile', Verify, ProfileUser)
+
+router.put(
+    "/update-profile",
+    Verify,
+    upload.single('avatar'),
+    UpdateProfile
+)
 
 module.exports = router;
