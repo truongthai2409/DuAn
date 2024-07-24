@@ -1,39 +1,27 @@
-
-const { MongoClient, ServerApiVersion } = require('mongodb')
+const mongoose = require("mongoose");
 const { URI } = require("../config/index");
 
-
 class DatabaseService {
-  client
-  db
   constructor() {
-    this.client = new MongoClient(URI, {
-      serverApi: {
-        version: ServerApiVersion.v1,
-        strict: false,
-        deprecationErrors: true
-      }
-    })
-    this.db = this.client.db('SaleManagement')
+    this.connect();
   }
 
-  async connect() {
-    try {
-      await this.db.command({ ping: 1 })
-      console.log('Pinged your deployment. You successfully connected to MongoDB!')
-    } catch (err) {
-      console.log('An error occurred', err)
-      throw err
-    }
+  connect() {
+    mongoose.Promise = global.Promise;
+    mongoose.set("strictQuery", false);
+    mongoose
+      .connect(URI, {
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+      })
+      .then(() => {
+        console.log("Connected to database");
+      })
+      .catch((err) => {
+        console.log("Failed to connect to database", err);
+      });
   }
-
-  get users() {
-    return this.db.collection('users')
-  }
-
 }
 
-
-
-const db = new DatabaseService()
-module.exports = { db }
+const db = new DatabaseService();
+module.exports = { db };

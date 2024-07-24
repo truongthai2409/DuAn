@@ -1,4 +1,4 @@
-const { check,  validationResult } = require("express-validator");
+const {  validationResult } = require("express-validator");
 
 const Validate = (req, res, next) => {
     
@@ -8,7 +8,6 @@ const Validate = (req, res, next) => {
         errors.array().map((err) => (error[err.param] = err.msg));
         return res.status(422).json({ error });
     }
-    console.log("hello11")
     next();
 };
 

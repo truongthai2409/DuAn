@@ -1,12 +1,10 @@
 const express = require("express");
-const { AddProduct, GetAllProducts } = require("../controllers/product.js");
-// const Validate = require("../middleware/validate.js");
-// const { check } = require("express-validator");
+const { addProductController, getAllProductsController } = require("../controllers/product.controllers");
 
-const router = express.Router();
+const productRouters = express.Router();
 
 // Add product route -- POST request
-router.post(
+productRouters.post(
     "/addProduct",
     // check("email")
     //     .isEmail()
@@ -29,10 +27,10 @@ router.post(
     //     .isLength({ min: 8 })
     //     .withMessage("Must be at least 8 chars long"),
     // Validate,
-    AddProduct
+    addProductController
 );
 
-// router.post(
+// productRouters.post(
 //     "/login",
 //     check("email")
 //         .isEmail()
@@ -43,6 +41,6 @@ router.post(
 //     Login
 // );
 
-router.get('/all-product', GetAllProducts);
+productRouters.get('/all-product', getAllProductsController);
 
-module.exports = router;
+module.exports = productRouters;

@@ -1,7 +1,6 @@
-const User = require("../models/User.schema.js");
+const User = require("../models/User.js");
 const jwt = require("jsonwebtoken");
 const { SECRET_ACCESS_TOKEN } = require('../config/index.js');
-const BlacklistSchema = require("../models/Blacklist.schema.js");
 
 async function Verify(req, res, next) {
     try {

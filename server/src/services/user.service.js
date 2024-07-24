@@ -1,11 +1,10 @@
 const { db } = require('../services/db.service')
 
-exports.insertUser = async () => {
-    const user = await db.users.insertOne({
+exports.insertCustomer = async () => {
+    const customer = await db.users.insertOne({
         id: 1,
         name: 'Nguyen'
     })
-    return user
+    return customer;
 }
 
-// module.exports = {insertUser}

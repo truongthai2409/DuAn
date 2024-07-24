@@ -1,8 +1,9 @@
-const { insertUser } = require("../services/user.service");
 const express = require("express");
+const { Verify } = require("../middlewares/verify.middlewares");
+const { userControllers } = require("../controllers/user.controllers");
 
-const userRouter = express.Router();
+const userRouters = express.Router();
 
-userRouter.post('/users', insertUser)
+userRouters.get("/user", Verify, userControllers);
 
-module.exports = userRouter;
+module.exports = userRouters;
