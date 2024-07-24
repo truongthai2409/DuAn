@@ -1,41 +1,36 @@
 const express = require("express");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
-const mongoose = require("mongoose");
-const { PORT, URI } = require("./src/config/index.js");
-const App = require("./src/routes/index.js");
+const { createServer } = require("http")
+const { PORT } = require("./src/config/index.js");
+const { db } = require('./src/services/db.service');
+const authRouters = require("./src/routes/auth.route.js");
+const userRouters = require("./src/routes/user.route.js");
+const customerRouters = require("./src/routes/customer.route.js");
+const adminRouters = require("./src/routes/admin.route.js");
+const productRouters = require("./src/routes/product.route.js");
 
-// === 1 - CREATE SERVER ===
-const server = express();
+const app = express();
+const httpServer = createServer(app);
 
-// CONFIGURE HEADER INFORMATION
-// Allow request from any source. In real production, this should be limited to allowed origins only
-server.use(cors({
+db.connect();
+
+app.use(cors({
     origin: 'http://localhost:5173',
     credentials: true // Cho phép cookie được gửi kèm
 }));
-server.disable("x-powered-by"); //Reduce fingerprinting
-server.use(cookieParser());
-server.use(express.urlencoded({ extended: false }));
-server.use(express.json());
 
-// === 2 - CONNECT DATABASE ===
-// Set up mongoose's promise to global promise
-mongoose.promise = global.Promise;
-mongoose.set("strictQuery", false);
-mongoose
-    .connect(URI, {
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
-    })
-    .then(console.log("Connected to database"))
-    .catch((err) => console.log(err));
-
-// === 4 - CONFIGURE ROUTES ===
-// Connect Main route to server
-server.use(App);
-
-// === 5 - START UP SERVER ===
-server.listen(PORT, () =>
+httpServer.listen(PORT, () =>
     console.log(`Server running on http://localhost:${PORT}`)
 );
+
+app.disable("x-powered-by"); 
+app.use(cookieParser());
+app.use(express.urlencoded({ extended: false }));
+app.use(express.json());
+
+app.use('/auth', authRouters);
+app.use('/user', userRouters);
+app.use('/admin', adminRouters);
+app.use('/customer', customerRouters);
+app.use('/product', productRouters);
