@@ -1,6 +1,6 @@
 const Product = require("../models/Product.js");
 
-exports.addProductController = async (req, res) => {
+exports.AddProduct = async (req, res) => {
 
     const { image, name, price, productDescription, inventory } = req.body;
     try {
@@ -31,7 +31,7 @@ exports.addProductController = async (req, res) => {
     res.end();
 }
 
-exports.getAllProductsController = async (req, res) => {
+exports.GetAllProducts = async (req, res) => {
     try {
         const products = await Product.find({});
         res.status(200).send(products);
