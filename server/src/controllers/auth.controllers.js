@@ -3,7 +3,6 @@ const User = require("../models/User");
 const bcrypt = require("bcrypt");
 const Blacklist = require("../models/Blacklist.js")
 
-
 exports.registerController = async (req, res) => {
     // get required variables from request body
     // using es6 object destructing
