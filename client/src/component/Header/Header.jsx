@@ -6,6 +6,9 @@ import { useTranslation } from 'react-i18next';
 import avatar from '../../assets/images/avatar.png'
 import { logout } from '../../config/services/apiService';
 import { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import { useAuth } from '../../hooks/useAuth';
 
 const { Search } = Input
 
@@ -13,8 +16,10 @@ const onSearch = (value, _e, info) => console.log(info?.source, value);
 
 const Header = (props) => {
     const navigate = useNavigate();
+    const [initImage, setInitImage] = useState(null)
     const { t } = useTranslation(['profile', 'main']);
     const { i18n } = useTranslation()
+    const { logoutAuth } = useAuth();
     // const [title, setTitle] = useState(props.title)
 
     const changeLanguage = (lng) => {
@@ -24,27 +29,25 @@ const Header = (props) => {
     const handleLogout = async () => {
         try {
             await logout();
-            navigate('/login');
+            logoutAuth()
         } catch (error) {
             console.error("Failed to logout", error);
         }
     };
-    // const handleString = (str) => {
-    //     str = str.toLowerCase();
-    //     let words = str.split(' ');
-    //     for (let i = 1; i < words.length; i++) {
-    //         words[i] = words[i].charAt(0).toUpperCase() + words[i].slice(1);
-    //     }
-    //     let result = words.join('');
-    //     result += 'TL';
-    //     return result;
-    // }
-    // console.log(handleString(props.title))
 
-    // useEffect(() => {
-    //     const formattedTitle = handleString(props.title);
-    //     setTitle(formattedTitle);
-    // }, []);
+    axios.defaults.withCredentials = true;
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await axios.get('http://localhost:5000/auth/profile');
+                setInitImage("http://localhost:5000/" + response.data.data[0].avatar)
+                console.log("http://localhost:5000/" + response.data.data[0].avatar)
+            } catch (error) {
+                console.log(error);
+            }
+        };
+        fetchData();
+    }, []);
 
     return (
         <div className="header-container">
@@ -65,10 +68,10 @@ const Header = (props) => {
                     </div>
                 </div>
                 <div className='header-profile'>
-                    <Avatar className='' src={avatar} size={64} icon={<UserOutlined />} />
+                    <Avatar className='' src={initImage ? initImage : avatar} size={64} icon={<UserOutlined />} />
                     <ul className="dropdown">
                         <li className="dropdown-item name">
-                            <img className="dropdown-sellect" src={avatar} alt="Name" />
+                            <img className="dropdown-sellect" src={initImage ? initImage : avatar} alt="Name" />
                         </li>
                         <li className="dropdown-item myProfile">
                             <Link className="dropdown-item" to="/profile">

@@ -2,6 +2,8 @@
 const User = require("../models/User.js");
 const bcrypt = require("bcrypt");
 const Blacklist = require("../models/Blacklist.js")
+const jwt = require("jsonwebtoken");
+const { SECRET_ACCESS_TOKEN } = require('../config/index.js');
 
 exports.registerController = async (req, res) => {
     // get required variables from request body
@@ -125,5 +127,79 @@ exports.logoutController = async (req, res) => {
             message: 'Internal Server Error',
         });
     }
+}
+
+exports.ProfileUser = async (req, res) => {
+    try {
+        const user = req.user; // we have access to the user object from the request
+        // const { _id } = user; // extract the user role
+        if (!user) {
+            res.status(404).json({ message: "User not found" });
+        }
+        res.status(200).json({
+            status: "success",
+            data: [user],
+            message: "Get profile user success"
+        });
+    } catch (err) {
+        res.status(500).json({
+            status: 'error',
+            message: 'Internal Server Error',
+        });
+    }
+    res.end()
+}
+
+
+exports.UpdateProfile = async (req, res) => {
+    const user = req.user;
+    const { _id } = user;
+    const { email } = req.body;
+    try {
+        const updateData = req.body;
+
+        if (!user) {
+            return res.status(404).json({
+                status: "failed",
+                data: [],
+                message: "User not found",
+            });
+        }
+        if (email && email !== user.email) {
+            const existingUser = await User.findOne({ email });
+            if (existingUser) {
+                return res.status(400).json({
+                    status: "failed",
+                    data: [],
+                    message: "Email already in use by another account",
+                });
+            }
+        }
+
+        if (req.file) {
+            updateData.avatar = req.file.path; // Lưu đường dẫn ảnh đại diện vào updateData
+        }
+
+        const updatedUser = await User.findByIdAndUpdate(_id, updateData, { new: true });
+
+        if (!updatedUser) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        res.status(200).json({
+            status: "success",
+            code: 200,
+            data: [updatedUser],
+            message: "Update profile success"
+        });
+    } catch (err) {
+        res.status(500).json({
+            status: "error",
+            code: 500,
+            data: [user],
+            message: "Internal Server Error",
+        });
+    }
     res.end();
 }
+
