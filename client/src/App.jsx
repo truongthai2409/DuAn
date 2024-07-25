@@ -10,6 +10,7 @@ import RegesterPage from "./pages/Regester/Regester";
 import OrderManagement from "./pages/OrderManagement/OrderManagement";
 import CustomerManagement from "./pages/CustomerManagement/CustomerManagement";
 import PrivateRoute from "./config/routing/PrivateRoute";
+// import Testing from "./pages/Testing/Testing";
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
       {/* <AppRouter /> */}
       <Toaster />
       <Routes>
+        {/* <Route path="/testing" element={<Testing />} /> */}
         <Route path="/register" element={<RegesterPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/" element={<PrivateRoute><HomePage /></PrivateRoute>} />
