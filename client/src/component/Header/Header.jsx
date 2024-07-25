@@ -1,12 +1,11 @@
 import './Header.scss'
+import React, { useState, useEffect } from 'react';
 import { Avatar, Input } from "antd"
 import { UserOutlined } from "@ant-design/icons";
 import { Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import avatar from '../../assets/images/avatar.png'
 import { logout } from '../../config/services/apiService';
-import { useEffect, useState } from 'react';
-import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useAuth } from '../../hooks/useAuth';
 

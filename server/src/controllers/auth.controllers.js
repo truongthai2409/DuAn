@@ -129,7 +129,7 @@ exports.logoutController = async (req, res) => {
     }
 }
 
-exports.ProfileUser = async (req, res) => {
+exports.profileUserController = async (req, res) => {
     try {
         const user = req.user; // we have access to the user object from the request
         // const { _id } = user; // extract the user role
@@ -151,7 +151,7 @@ exports.ProfileUser = async (req, res) => {
 }
 
 
-exports.UpdateProfile = async (req, res) => {
+exports.updateProfileController = async (req, res) => {
     const user = req.user;
     const { _id } = user;
     const { email } = req.body;
