@@ -1,6 +1,7 @@
 const User = require("../models/User.js");
 const jwt = require("jsonwebtoken");
 const { SECRET_ACCESS_TOKEN } = require('../config/index.js');
+const Blacklist = require("../models/Blacklist.js")
 
 async function Verify(req, res, next) {
     try {

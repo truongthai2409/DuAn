@@ -9,6 +9,7 @@ const userRouters = require("./src/routes/user.route.js");
 const customerRouters = require("./src/routes/customer.route.js");
 const adminRouters = require("./src/routes/admin.route.js");
 const productRouters = require("./src/routes/product.route.js");
+const path = require('path');
 
 const app = express();
 const httpServer = createServer(app);
@@ -20,9 +21,7 @@ app.use(cors({
     credentials: true // Cho phép cookie được gửi kèm
 }));
 
-httpServer.listen(PORT, () =>
-    console.log(`Server running on http://localhost:${PORT}`)
-);
+
 
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 app.disable("x-powered-by"); 
@@ -35,3 +34,8 @@ app.use('/user', userRouters);
 app.use('/admin', adminRouters);
 app.use('/customer', customerRouters);
 app.use('/product', productRouters);
+
+
+httpServer.listen(PORT, () =>
+    console.log(`Server running on http://localhost:${PORT}`)
+);
