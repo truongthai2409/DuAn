@@ -1,35 +1,40 @@
 import React, { useEffect, useState } from "react";
+interface Product {
+  imageUrl: string;
+  productName: string;
+  productDetail: string;
+  price: string;
+}
 
 const ShopeeProduct = () => {
-  const [images, setImages] = useState<string[]>([]);
+  const [products, setProducts] = useState<[]>([]);
 
   useEffect(() => {
-    chrome.storage.local.get(["srcList"], (result) => {
-      if (result.srcList) {
-        setImages(result.srcList);
+    chrome.storage.local.get(['products'], (result) => {
+      if (result.products) {
+        setProducts(result.products);
       }
     });
-  }, [images]);
+  }, []);
 
   const handleScrape = () => {
     chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
       if (tabs[0] && tabs[0].id) {
-        chrome.tabs.sendMessage(
-          tabs[0].id,
-          { action: "scrapeImages" },
-          (response) => {
-            if (chrome.runtime.lastError) {
-              console.error(chrome.runtime.lastError.message);
-              // Handle the error, maybe the content script isn't ready
-              alert(
-                "There was an error communicating with the page. Please refresh the page and try again."
-              );
-            } else {
-              // Handle successful response
-              console.log("Images scraped successfully");
-            }
+        chrome.tabs.sendMessage(tabs[0].id, { action: 'scrapeProducts' }, (response) => {
+          if (chrome.runtime.lastError) {
+            console.error(chrome.runtime.lastError.message);
+            alert("There was an error communicating with the page. Please refresh the page and try again.");
+          } else {
+            console.log("Products scraped successfully");
+            // Refresh the product list
+            chrome.storage.local.get(['products'], (result) => {
+              if (result.products) {
+                setProducts(result.products);
+                console.log(result.products);
+              }
+            });
           }
-        );
+        });
       } else {
         console.error("No active tab found");
       }
@@ -130,15 +135,15 @@ const ShopeeProduct = () => {
         Scrape Images
       </button>
       <ul>
-        {images.map((src, index) => (
-          <li key={index}>
-            <img
-              src={src}
-              alt={`Scraped image ${index}`}
-              style={{ width: "100px" }}
-            />
+        {
+          <li >
+            {/* <img src={products.imageUrl} alt={products.productName} style={{ width: '100px' }} />
+            <h3>{products.productName}</h3>
+            <p>{products.productDetail}</p>
+            <p>Price: {products.price}</p> */}
           </li>
-        ))}
+        }
+        {/* products.map((product, index) => ( */}
       </ul>
     </>
   );

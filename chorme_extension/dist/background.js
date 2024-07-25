@@ -1,1 +1,1 @@
-chrome.runtime.onMessage.addListener(((s,e,o)=>{s.srcList&&(console.log("Image sources:",s.srcList),chrome.storage.local.set({srcList:s.srcList},(()=>{console.log("Image sources saved to storage")})))}));
+chrome.runtime.onMessage.addListener(((o,e,s)=>{o.products&&(console.log("Product details:",o.products),chrome.storage.local.set({products:o.products},(()=>{console.log("Product details saved to storage")})))}));

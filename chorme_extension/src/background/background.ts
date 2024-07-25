@@ -39,10 +39,10 @@
 //   }
 // });
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-  if (message.srcList) {
-    console.log("Image sources:", message.srcList);
-    chrome.storage.local.set({ srcList: message.srcList }, () => {
-      console.log("Image sources saved to storage");
+  if (message.products) {
+    console.log('Product details:', message.products);
+    chrome.storage.local.set({ products: message.products }, () => {
+      console.log('Product details saved to storage');
     });
   }
 });

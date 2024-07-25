@@ -9,37 +9,38 @@
 
 // alert("hello");
 
-// chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-//   if (request.action === "getProductName") {
-//     const element = document.evaluate(
-//       request.xpath,
-//       document,
-//       null,
-//       XPathResult.FIRST_ORDERED_NODE_TYPE,
-//       null
-//     ).singleNodeValue;
-//     console.log(element);
-//     if (element) {
-//       sendResponse({ textContent: element.textContent });
-//     } else {
-//       sendResponse({ textContent: "Element not found" });
-//     }
-//   }
-//   if (request.action === "getProductDetail") {
-//     const element = document.evaluate(
-//       request.xpath,
-//       document,
-//       null,
-//       XPathResult.FIRST_ORDERED_NODE_TYPE,
-//       null
-//     ).singleNodeValue;
-//     // console.log(element);ZX
-//     if (element) {
-//       sendResponse({ textContent: element.textContent });
-//     } else {
-//       sendResponse({ textContent: "Element not found" });
-//     }
-//   }
+chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+  if (request.action === "getProductName") {
+    const element = document.evaluate(
+      request.xpath,
+      document,
+      null,
+      XPathResult.FIRST_ORDERED_NODE_TYPE,
+      null
+    ).singleNodeValue;
+    console.log(element);
+    if (element) {
+      sendResponse({ textContent: element.textContent });
+    } else {
+      sendResponse({ textContent: "Element not found" });
+    }
+  }
+  if (request.action === "getProductDetail") {
+    const element = document.evaluate(
+      request.xpath,
+      document,
+      null,
+      XPathResult.FIRST_ORDERED_NODE_TYPE,
+      null
+    ).singleNodeValue;
+    // console.log(element);ZX
+    if (element) {
+      sendResponse({ textContent: element.textContent });
+    } else {
+      sendResponse({ textContent: "Element not found" });
+    }
+  }
+});
 //   // Truy xuất thẻ div chứa các thẻ p
 //   const container = document.querySelector(".e8lZp3");
 
@@ -70,22 +71,41 @@
 //   }
 // });
 
+function scrapeProductDetails() {
+  const images = Array.from(document.querySelectorAll('div.SarUkj.shopee-image-container img'));
+  const productNames = document.querySelector('span.oh0Xh2');
+  const productDetails = Array.from(document.querySelectorAll('p.QN2lPu'));
+  const prices = document.querySelector('div.G27FPf');
+
+  const product = {
+    productName: productNames?.textContent?.trim() || 'N/A',
+    price: prices?.textContent?.trim() || 'N/A',
+    image: images.map(img => (img as HTMLImageElement).src),
+    productDetail: productDetails.map(index => index.textContent?.trim())  || 'N/A'
+  }
+
+  // const products = images.map((img, index) => ({
+  //   imageUrl: (img as HTMLImageElement).src,
+  //   productName: productNames[0]?.textContent?.trim() || 'N/A',
+  //   productDetail: productDetails[index]?.textContent?.trim() || 'N/A',
+  //   price: prices[0]?.textContent?.trim() || 'N/A'
+  // }));
+  return product;
+}
+
 function initContentScript() {
   chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-    if (message.action === "scrapeImages") {
-      const images = Array.from(
-        document.querySelectorAll("div.SarUkj.shopee-image-container img")
-      );
-      const srcList = images.map((img) => (img as HTMLImageElement).src);
-      chrome.runtime.sendMessage({ srcList });
-      sendResponse({ success: true }); // Acknowledge receipt of the message
+    if (message.action === 'scrapeProducts') {
+      const products = scrapeProductDetails();
+      chrome.runtime.sendMessage({ products });
+      sendResponse({ success: true });
     }
   });
 }
 
-// Run the init function when the DOM is fully loaded
-if (document.readyState === "loading") {
-  document.addEventListener("DOMContentLoaded", initContentScript);
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initContentScript);
 } else {
   initContentScript();
 }
+
