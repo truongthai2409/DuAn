@@ -10,6 +10,7 @@ import { useTranslation } from "react-i18next";
 
 const ProductManagement = () => {
     const [dataTable, setDataTable] = useState([]);
+    const [initdataTable, setInitDataTable] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [filter, setFilter] = useState({
@@ -25,6 +26,7 @@ const ProductManagement = () => {
             try {
                 const response = await axios.get('http://localhost:5000/product/all-product');
                 setDataTable(response.data);
+                setInitDataTable(response.data)
                 setLoading(false);
                 console.log(response);
             } catch (error) {
@@ -35,17 +37,17 @@ const ProductManagement = () => {
         fetchData();
     }, []);
 
-    const optionsProductID = dataProductManagement.map((item) => ({
-        value: item.id,
-        label: item.id,
+    const optionsProductID = initdataTable.map((item) => ({
+        value: item._id,
+        label: item._id,
     }));
 
-    const optionsProductName = dataProductManagement.map((item) => ({
+    const optionsProductName = initdataTable.map((item) => ({
         value: item.name,
         label: item.name,
     }));
 
-    const optionsProductPrice = dataProductManagement.map((item) => ({
+    const optionsProductPrice = initdataTable.map((item) => ({
         value: item.price,
         label: item.price,
     }));
@@ -94,7 +96,7 @@ const ProductManagement = () => {
             price: "",
             productDescription: ""
         });
-        setDataTable(dataProductManagement);
+        setDataTable(initdataTable);
     };
 
     const columns = [
