@@ -10,6 +10,7 @@ const customerRouters = require("./src/routes/customer.route.js");
 const adminRouters = require("./src/routes/admin.route.js");
 const productRouters = require("./src/routes/product.route.js");
 const path = require('path');
+const paymentRouters = require("./src/routes/payment.router.js");
 
 const app = express();
 const httpServer = createServer(app);
@@ -34,6 +35,7 @@ app.use('/user', userRouters);
 app.use('/admin', adminRouters);
 app.use('/customer', customerRouters);
 app.use('/product', productRouters);
+app.use('/payment', paymentRouters);
 
 
 httpServer.listen(PORT, () =>
