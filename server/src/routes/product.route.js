@@ -1,5 +1,5 @@
 const express = require("express");
-const { addProductController, getAllProductsController, getAllProductsFromLazada } = require("../controllers/product.controllers");
+const { addProductController, getAllProductsController, getAllProductsFromLazada, SynchronizeLazadaProducts, GetCategoryTreeLazada } = require("../controllers/product.controllers");
 const { Verify } = require("../middleware/verify.middlewares.js");
 
 const productRouters = express.Router();
@@ -14,6 +14,10 @@ productRouters.post(
 productRouters.get('/all-product', Verify, getAllProductsController);
 
 productRouters.get('/all-product-from-lazada', getAllProductsFromLazada);
+
+productRouters.get('/sync-product-lazada', SynchronizeLazadaProducts);
+
+productRouters.get('/category-tree', GetCategoryTreeLazada);
 
 
 module.exports = productRouters;

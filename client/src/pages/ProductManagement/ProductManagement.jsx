@@ -1,5 +1,5 @@
 import Header from "../../component/Header/Header"
-import { Table, Button, Select, Row, Col } from "antd"
+import { Table, Button, Select, Row, Col, Modal, Input } from "antd"
 import dataProductManagement from '../../data/ProductManagement.json'
 import { useState, useEffect } from "react";
 import './ProductManagement.css'
@@ -20,6 +20,20 @@ const ProductManagement = () => {
         productDescription: ""
     });
     const { t } = useTranslation('function');
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
+    const showModal = () => {
+        setIsModalOpen(true);
+    };
+
+    const handleOk = () => {
+        setIsModalOpen(false);
+    };
+
+    const handleCancel = () => {
+        setIsModalOpen(false);
+    };
+
 
     useEffect(() => {
         const fetchData = async () => {
@@ -75,7 +89,7 @@ const ProductManagement = () => {
 
     const handleSearch = () => {
         // Lọc theo tất cả các trường có giá trị
-        const filteredData = dataProductManagement.filter((item) => {
+        const filteredData = initdataTable.filter((item) => {
             let isValid = true;
             for (const key in filter) {
                 if (filter[key] && !item[key].includes(filter[key])) {
@@ -110,20 +124,26 @@ const ProductManagement = () => {
         {
             title: t('nameTL'),
             dataIndex: "name",
-            width: "auto",
+            width: "10vw",
             align: "center"
         },
         {
             title: t('priceTL'),
             dataIndex: "price",
             width: "auto",
-            align: "center"
+            align: "center",
+            render: (text) => {
+                return text.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
+            }
         },
         {
-            title:  t('productDescriptionTL'),
+            title: t('productDescriptionTL'),
             dataIndex: "productDescription",
-            width: "auto",
-            align: "center"
+            width: "20vw",
+            align: "center",
+            render: (text) => {
+                return <div dangerouslySetInnerHTML={{ __html: text }} />
+            }
         },
         {
             title: t('inventoryTL'),
@@ -138,9 +158,9 @@ const ProductManagement = () => {
             align: "center",
             render: () => (
                 <div>
-                    <Button style={{marginRight: 5}}>View</Button>
+                    <Button style={{ marginRight: 5 }}>View</Button>
                     <Button type="primary">Edit</Button>
-                    <Button type="primary" danger style={{marginLeft: 5}}>Delete</Button>
+                    <Button type="primary" danger style={{ marginLeft: 5 }}>Delete</Button>
                 </div>
             ),
         },
@@ -205,6 +225,9 @@ const ProductManagement = () => {
                         <Button style={{ marginLeft: 10 }} onClick={handleCleanFilterButton} type="primary" danger>{t('clearTL')}</Button>
                     </Col>
                 </Row>
+                <Row style={{ paddingTop: 10 }}>
+                    <Button type="primary" onClick={showModal}>Add Product</Button>
+                </Row>
             </div>
             <div className="pm-table">
                 <Table
@@ -213,14 +236,22 @@ const ProductManagement = () => {
                     }}
                     columns={columns}
                     dataSource={dataTable}
-                    scroll={{ x: "100vw" }}
+                    scroll={{ x: "100vw", y: "50vw" }}
                     style={{ maxWidth: "100%", minHeight: "100%" }}
                     pagination={{
                         pageSize: 6,
                         style: { marginRight: '120px', marginTop: "28px" }
                     }}
+                    bordered={true}
                 />
             </div>
+
+
+            <Modal open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
+                <Row>
+                    Name of Product: <Input/>
+                </Row>
+            </Modal>
         </div>
     )
 }

@@ -9,6 +9,7 @@ const userRouters = require("./src/routes/user.route.js");
 const customerRouters = require("./src/routes/customer.route.js");
 const adminRouters = require("./src/routes/admin.route.js");
 const productRouters = require("./src/routes/product.route.js");
+const lazadaRouters = require("./src/routes/lazada.route.js")
 const path = require('path');
 
 const app = express();
@@ -34,6 +35,7 @@ app.use('/user', userRouters);
 app.use('/admin', adminRouters);
 app.use('/customer', customerRouters);
 app.use('/product', productRouters);
+app.use('/lazada', lazadaRouters);
 
 
 httpServer.listen(PORT, () =>

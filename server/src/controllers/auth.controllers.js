@@ -203,3 +203,54 @@ exports.updateProfileController = async (req, res) => {
     res.end();
 }
 
+exports.updateShopController = async (req, res) => {
+    const user = req.user;
+    const { _id } = user;
+    const { phone_number } = req.body;
+    try {
+        const updateData = req.body;
+
+        if (!user) {
+            return res.status(404).json({
+                status: "failed",
+                data: [],
+                message: "User not found",
+            });
+        }
+        if (phone_number && phone_number !== user.phone_number) {
+            const existingUser = await User.findOne({ phone_number });
+            if (existingUser) {
+                return res.status(400).json({
+                    status: "failed",
+                    data: [],
+                    message: "Phone number already in use by another account",
+                });
+            }
+        }
+
+        // if (req.file) {
+        //     updateData.avatar = req.file.path; // Lưu đường dẫn ảnh đại diện vào updateData
+        // }
+
+        const updatedUser = await User.findByIdAndUpdate(_id, updateData, { new: true });
+
+        if (!updatedUser) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        res.status(200).json({
+            status: "success",
+            code: 200,
+            data: [updateData],
+            message: "Update shop success"
+        });
+    } catch (err) {
+        res.status(500).json({
+            status: "error",
+            code: 500,
+            data: [user],
+            message: "Internal Server Error",
+        });
+    }
+    res.end();
+}
