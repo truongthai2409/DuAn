@@ -73,7 +73,7 @@ const LoginPage = () => {
               </div>
               <div>
                 <label htmlFor="password" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                  Password
+                  {t('passwordTL')}
                 </label>
                 <input
                   type="password"
@@ -111,13 +111,13 @@ const LoginPage = () => {
               </div>
               <div className="flex items-center justify-between">
                 <div className='flex items-center justify-center w-full'>
-                  <button onClick={()=> {changeLanguage('en')}}>
+                  <span onClick={()=> {changeLanguage('en')}}>
                     <img className='h-[30px] w-[60px] rounded-md' src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Flag_of_the_United_Kingdom_%281-2%29.svg" alt="" />
-                  </button>
+                  </span>
                   <p className='px-5'>|</p>
-                  <button onClick={()=> {changeLanguage('vi')}}>
+                  <span onClick={()=> {changeLanguage('vi')}}>
                     <img className='h-[30px] w-[60px] rounded-md' src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/21/Flag_of_Vietnam.svg/225px-Flag_of_Vietnam.svg.png" alt="" />
-                  </button>
+                  </span>
                 </div>
               </div>
               <button

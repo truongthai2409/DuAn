@@ -104,6 +104,58 @@ exports.loginController = async (req, res) => {
     res.end();
 }
 
+exports.loginExtensionController = async (req, res) => {
+    const { email } = req.body;
+    try {
+        const user = await User.findOne({ email }).select("+password");
+        if (!user)
+            return res.status(401).json({
+                status: "failed",
+                data: [],
+                message:
+                    "Account does not exist",
+            });
+
+        const isPasswordValid = await bcrypt.compare(
+            `${req.body.password}`,
+            user.password
+        );
+
+        if (!isPasswordValid)
+            return res.status(401).json({
+                status: "failed",
+                data: [],
+                message:
+                    "Invalid email or password. Please try again with the correct credentials.",
+            });
+
+        let options = {
+            maxAge: 20 * 60 * 1000,
+            httpOnly: true,
+            secure: true,
+            sameSite: "None",
+        };
+        const token = user.generateAccessJWT();
+        // const token = jwt.sign({ id: user.id }, SECRET_ACCESS_TOKEN, {
+        //     expiresIn: 86400, // 24 giờ
+        // });
+        res.status(200).json({
+            status: "success",
+            message: "You have successfully logged in.",
+            token
+        });
+
+    } catch (err) {
+        res.status(500).json({
+            status: "error",
+            code: 500,
+            data: [],
+            message: "Internal Server Error",
+        });
+    }
+    res.end();
+}
+
 exports.logoutController = async (req, res) => {
     try {
         const authHeader = req.headers['cookie']; // get the session cookie from request header
@@ -149,7 +201,6 @@ exports.profileUserController = async (req, res) => {
     }
     res.end()
 }
-
 
 exports.updateProfileController = async (req, res) => {
     const user = req.user;

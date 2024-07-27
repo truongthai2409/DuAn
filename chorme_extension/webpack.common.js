@@ -2,8 +2,9 @@ const path = require('path');
 const CopyPlugin = require('copy-webpack-plugin');
 const HtmlPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
-const tailwindcss = require('tailwindcss')
-const autoprefixer = require('autoprefixer')
+const tailwindcss = require('tailwindcss');
+const autoprefixer = require('autoprefixer');
+const Dotenv = require('dotenv-webpack');
 
 module.exports = {
     entry: {
@@ -61,7 +62,11 @@ module.exports = {
             'popup',
             'options',
             'newTab'
-        ])
+        ]),
+        new Dotenv({
+            path: './.env', // Đường dẫn đến file .env của bạn
+            safe: true // Optional: Đảm bảo rằng tệp .env.example cũng được sử dụng nếu có
+        }),
     ],
     resolve: {
         extensions: ['.tsx', '.js', '.ts']

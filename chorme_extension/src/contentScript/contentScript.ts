@@ -75,21 +75,15 @@ function scrapeProductDetails() {
   const images = Array.from(document.querySelectorAll('div.SarUkj.shopee-image-container img'));
   const productNames = document.querySelector('span.oh0Xh2');
   const productDetails = Array.from(document.querySelectorAll('p.QN2lPu'));
+  console.log(productDetails.length)
   const prices = document.querySelector('div.G27FPf');
-
+  // console.log(productDetails)
   const product = {
     productName: productNames?.textContent?.trim() || 'N/A',
     price: prices?.textContent?.trim() || 'N/A',
     image: images.map(img => (img as HTMLImageElement).src),
-    productDetail: productDetails.map(index => index.textContent?.trim())  || 'N/A'
+    productDetails: productDetails.map(detail => detail.textContent.trim()).join(` `) || 'N/A'// Chuyển mảng thành chuỗi
   }
-
-  // const products = images.map((img, index) => ({
-  //   imageUrl: (img as HTMLImageElement).src,
-  //   productName: productNames[0]?.textContent?.trim() || 'N/A',
-  //   productDetail: productDetails[index]?.textContent?.trim() || 'N/A',
-  //   price: prices[0]?.textContent?.trim() || 'N/A'
-  // }));
   return product;
 }
 
@@ -106,6 +100,8 @@ function initContentScript() {
 if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', initContentScript);
 } else {
-  initContentScript();
+  setTimeout(() => {
+    initContentScript();
+  }, 3000);
 }
 

@@ -5,16 +5,22 @@ import About from './components/About'
 import Login from './pages/Login'
 import Lazada from './pages/Lazada'
 import Shopee from './pages/Shopee'
+import PrivateRoute from "./config/routing/PrivateRoute";
+import './i18n/i18n'
+import { Toaster } from 'sonner'
 
 function Popup() {
     return (
-        <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/about" element={<About />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/shopee" element={<Shopee />} />
-            <Route path="/lazada" element={<Lazada />} />
-        </Routes>
+        <>
+            <Toaster />
+            <Routes>
+                <Route path="/" element={<PrivateRoute><Home /></PrivateRoute>} />
+                <Route path="/login" element={<Login />} />
+                <Route path="/about" element={<PrivateRoute><About /></PrivateRoute>} />
+                <Route path="/shopee" element={<PrivateRoute><Shopee /></PrivateRoute>} />
+                <Route path="/lazada" element={<PrivateRoute><Lazada /></PrivateRoute>} />
+            </Routes>
+        </>
     )
 }
 

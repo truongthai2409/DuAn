@@ -63,6 +63,7 @@ const User = () => {
             });
             console.log(values);
             navigate("/profile")
+            window.location.href =" http://localhost:5173/profile"
             // message.success('Form submitted successfully!');
           } catch (error) {
             // message.error('Form submission failed!');

@@ -3,14 +3,18 @@ import React, { useState, ReactNode } from "react";
 import Dropdown from "../hooks/Dropdown";
 import { Link } from "react-router-dom";
 import Header from "../components/Header";
+import i18next from "../i18n/i18n";
+import { useTranslation } from "react-i18next";
+// import { TFunction } from 'i18next';
 
 const Home: React.FC = () => {
+  const { t } = useTranslation(['main']);
   return (
     <>
       <Header />
       <div className="p-4">
         <p className="block px-4 py-2 text-sm">
-          Choose the e-commerce platform you want!
+          {t('main:ChooseApp')}
         </p>
         <div className="flex">
           <Link
