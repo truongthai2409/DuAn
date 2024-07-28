@@ -1,48 +1,58 @@
-// // chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
-// //   console.log(msg);
-// //   console.log(sender);
-// //   sendResponse("Front the background Script");
-// // });
+const cacheName = "CHAT_API";
 
-// const cacheName = "CHAT_API";
+caches
+  .open(cacheName)
+  .then((cache) => {
+    cache.keys().then((keys) => {
+      keys.forEach((key) => {
+        cache.match(key).then((response) => {
+          if (response) {
+            response.json().then((data) => {
+              console.log("Data for", key.url, ":", data);
 
-// caches
-//   .open(cacheName)
-//   .then((cache) => {
-//     cache.keys().then((keys) => {
-//       keys.forEach((key) => {
-//         cache.match(key).then((response) => {
-//           if (response) {
-//             response.json().then((data) => {
-//               console.log("Data for", key.url, ":", data);
+              let storageData = {};
 
-//               // Send data to popup
-//               chrome.runtime.sendMessage({
-//                 action: "updatePopup",
-//                 data: { key: key.url, value: data },
-//               });
-//             });
-//           }
-//         });
-//       });
-//     });
-//   })
-//   .catch((error) => {
-//     console.error("Error opening cache:", error);
-//   });
-
-// chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-//   if (message.type === "SEND_PARAGRAPH_TEXTS") {
-//     console.log("Received paragraph texts:", message.texts);
-//     // Xử lý dữ liệu theo ý muốn
-//     sendResponse({ status: "success" });
-//   }
-// });
-chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-  if (message.products) {
-    console.log('Product details:', message.products);
-    chrome.storage.local.set({ products: message.products }, () => {
-      console.log('Product details saved to storage');
+              chrome.storage.local.set(storageData, () => {
+                if (chrome.runtime.lastError) {
+                  console.error("Error saving data to local storage:", chrome.runtime.lastError);
+                } else {
+                  console.log("Data successfully saved to local storage for", key.url);
+                }
+              });
+            });
+          }
+        });
+      });
     });
+  })
+  .catch((error) => {
+    console.error("Error opening cache:", error);
+  });
+
+
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+  switch (true) {
+    case !!message.shopeeProducts:
+      console.log("Product details:", message.shopeeProducts);
+      chrome.storage.local.set({ products: message.shopeeProducts }, () => {
+        console.log("Product details saved to storage");
+      });
+      break;
+    case !!message.lazadaProducts:
+      console.log("Product details:", message.lazadaProducts);
+      chrome.storage.local.set({ products: message.lazadaProducts }, () => {
+        console.log("Product details saved to storage");
+      });
+      break;
+    // case !!message.dataProfile:
+    //   console.log("Product details:", message.dataProfile);
+    //   chrome.storage.local.set({ products: message.dataProfile }, () => {
+    //     console.log("Product details saved to storage");
+    //   });
+    //   break;
+    default:
+      console.log("Unknown product source");
   }
+  sendResponse({ status: "received" });
+  return true; // Giữ cổng mở để gửi phản hồi không đồng bộ
 });

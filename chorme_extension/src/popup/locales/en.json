@@ -17,6 +17,9 @@
         "Get Product Detail": "Get Product Detail",
         "Synchronized Product": "Synchronized Product",
         "Leave a comment": "Leave a comment"
-
+    },
+    "Messages": {
+        "Error Choose Ecommerces": "Please select the appropriate e-commerce platform",
+        "Error Connecting": "There was an error communicating with the page. Please refresh the page and try again."
     }
 }

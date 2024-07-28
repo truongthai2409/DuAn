@@ -17,6 +17,10 @@
         "Get Product Detail": "Lấy thông tin sản phẩm",
         "Synchronized Product": "Đồng bộ sản phẩm",
         "Leave a comment": "Chỉnh sửa mô tả"
+    },
+    "Messages": {
+        "Error Choose Ecommerces": "Vui lòng chọn đúng sàn thương mại điện tử phù hợp",
+        "Error Connecting": "Đã xảy ra lỗi khi tải trang. Vui lòng làm mới trang và thử lại."
     }
 }
 

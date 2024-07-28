@@ -27,22 +27,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     useEffect(() => {
         const getToken = async () => {
             let token = localStorage.getItem('authToken');
-            console.log(token)
-
-            // if (!token && chrome.storage && chrome.storage.local) {
-            //     chrome.storage.local.get('authToken', (result) => {
-            //         token = result.authToken;
-            //         if (token) {
-            //             setToken(token);
-            //         }
-            //         setLoading(false);
-            //     });
-            // } else {
-            //     if (token) {
-            //         setToken(token);
-            //     }
-            //     setLoading(false);
-            // }
             if (token) {
                 setToken(token);
             }

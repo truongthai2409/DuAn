@@ -15,12 +15,12 @@ const Lazada = () => {
     {
       label: "Lazada",
       key: "1",
-      children: <LazadaShop />,
+      children: <LazadaProduct />,
     },
     {
       label: "Shop detail",
       key: "2",
-      children: <LazadaProduct />,
+      children: <LazadaShop />,
     },
   ];
   return (
