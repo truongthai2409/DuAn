@@ -1,21 +1,13 @@
 import React, { useEffect, useState } from "react";
-interface Product {
-  imageUrl: string;
-  productName: string;
-  productDetail: string;
-  price: string;
-}
+import { postData } from "../../config/services/apiService"
+import { useTranslation } from "react-i18next";
 
-const ShopeeProduct = () => {
-  const [products, setProducts] = useState<[]>([]);
-
-  useEffect(() => {
-    chrome.storage.local.get(['products'], (result) => {
-      if (result.products) {
-        setProducts(result.products);
-      }
-    });
-  }, []);
+const ShopeeProduct: React.FC = () => {
+  const { t } = useTranslation(['main']);
+  const [images, setImages] = useState<string[]>([]);
+  const [productName, setProductName] = useState<string>("");
+  const [price, setPrice] = useState<string>("");
+  const [productDetails, setProductDetails] = useState<string>("");
 
   const handleScrape = () => {
     chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
@@ -26,11 +18,12 @@ const ShopeeProduct = () => {
             alert("There was an error communicating with the page. Please refresh the page and try again.");
           } else {
             console.log("Products scraped successfully");
-            // Refresh the product list
             chrome.storage.local.get(['products'], (result) => {
               if (result.products) {
-                setProducts(result.products);
-                console.log(result.products);
+                setImages(result.products.image);
+                setProductName(result.products.productName);
+                setPrice(result.products.price);
+                setProductDetails(result.products.productDetails);
               }
             });
           }
@@ -40,15 +33,28 @@ const ShopeeProduct = () => {
       }
     });
   };
+
+  const handlePostProduct = async () => {
+    const productPost = {
+      images,
+      productName,
+      price,
+      productDetails
+    }
+    const response = await postData(productPost);
+    console.log(response)
+  }
+
+
   return (
-    <>
+    <div>
       <form className="max-w-sm">
         <div className="flex items-center">
           <label
             htmlFor="id_store"
             className="block w-[170px] align-center mb-2 text-xs font-medium text-gray-700 dark:text-white"
           >
-            Shop Name:
+            ID Store:
           </label>
           <input
             type="text"
@@ -61,91 +67,73 @@ const ShopeeProduct = () => {
             htmlFor="product_name"
             className="w-[170px] align-center block mb-2 text-xs font-medium text-gray-700 dark:text-white"
           >
-            Code:
+            {t('main:Shop.Product Name')}: 
           </label>
           <input
             type="text"
             id="product_name"
+            value={productName}
+            onChange={(e) => setProductName(e.target.value)}
             className="block w-full p-2 mb-2 text-xs text-gray-700 border border-gray-300 rounded-lg bg-gray-50 focus:ring-gray-500 focus:border-gray-500"
           />
         </div>
         <div className="flex items-center">
           <label
-            htmlFor="product_name"
+            htmlFor="price"
             className="w-[170px] align-center block mb-2 text-xs font-medium text-gray-700 dark:text-white"
           >
-            Cookies:
+            {t('main:Shop.Price')}:
           </label>
           <input
             type="text"
-            id="product_name"
+            id="price"
+            value={price}
+            onChange={(e) => setPrice(e.target.value)}
             className="block w-full p-2 mb-2 text-xs text-gray-700 border border-gray-300 rounded-lg bg-gray-50 focus:ring-gray-500 focus:border-gray-500"
           />
         </div>
-        <div className="flex items-center">
+        <div className="relative">
           <label
-            htmlFor="product_name"
-            className="w-[170px] align-center block mb-2 text-xs font-medium text-gray-700 dark:text-white"
+            htmlFor="product_detail"
+            className="w-[170px] block mt-3 mb-2 text-xs font-medium text-gray-700 dark:text-white"
           >
-            Phone Number:
+            {t('main:Shop.Product Detail')}:
           </label>
-          <input
-            type="text"
-            id="product_name"
-            className="block w-full p-2 mb-2 text-xs text-gray-700 border border-gray-300 rounded-lg bg-gray-50 focus:ring-gray-500 focus:border-gray-500"
-          />
+          <textarea
+            id="product_detail"
+            rows={4}
+            value={productDetails}
+            onChange={(e) => setProductDetails(e.target.value)}
+            className="block p-2.5 w-full text-xs text-gray-700 bg-gray-50 rounded-lg border border-gray-300 focus:ring-gray-500 focus:border-gray-500"
+            placeholder={t('main:Shop.Leave a comment')}
+          ></textarea>
         </div>
-        <div className="flex items-center">
-          <label
-            htmlFor="product_name"
-            className="w-[170px] align-center block mb-2 text-xs font-medium text-gray-700 dark:text-white"
-          >
-            Email:
-          </label>
-          <input
-            type="text"
-            id="product_name"
-            className="block w-full p-2 mb-2 text-xs text-gray-700 border border-gray-300 rounded-lg bg-gray-50 focus:ring-gray-500 focus:border-gray-500"
-          />
+        <div className="flex mt-5">
+          {
+            images.map((img, index) => (
+              <img className="w-[90px] h-[90px] m-1" key={index} src={img} alt="" />
+            ))
+          }
         </div>
-        <div className="flex items-center">
-          <label
-            htmlFor="product_name"
-            className="w-[170px] align-center block mb-2 text-xs font-medium text-gray-700 dark:text-white"
-          >
-            Shop Id:
-          </label>
-          <input
-            type="text"
-            id="product_name"
-            className="block w-full p-2 mb-2 text-xs text-gray-700 border border-gray-300 rounded-lg bg-gray-50 focus:ring-gray-500 focus:border-gray-500"
-          />
-        </div>
+        
         <button
-          type="submit"
+          type="button"
+          id="fetchData"
+          onClick={handleScrape}
+          className="mt-3 mr-3 text-white bg-gray-600 hover:bg-gray-500 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-xs px-5 py-2.5 text-center"
+        >
+          {t('main:Shop.Get Product Detail')}
+        </button>
+        <button
+          type="button"
+          id="fetchData"
+          onClick={handlePostProduct}
           className="mt-3 text-white bg-gray-600 hover:bg-gray-500 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-xs px-5 py-2.5 text-center"
         >
-          Synchronized Product
+          {t('main:Shop.Synchronized Product')}
         </button>
       </form>
-      <button
-        onClick={handleScrape}
-        className="mt-3 text-white bg-gray-600 hover:bg-gray-500 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-xs px-5 py-2.5 text-center"
-      >
-        Scrape Images
-      </button>
-      <ul>
-        {
-          <li >
-            {/* <img src={products.imageUrl} alt={products.productName} style={{ width: '100px' }} />
-            <h3>{products.productName}</h3>
-            <p>{products.productDetail}</p>
-            <p>Price: {products.price}</p> */}
-          </li>
-        }
-        {/* products.map((product, index) => ( */}
-      </ul>
-    </>
+    </div>
   );
 };
 

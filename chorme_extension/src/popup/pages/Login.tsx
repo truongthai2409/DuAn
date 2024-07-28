@@ -32,9 +32,7 @@ const Login = () => {
         if (response.status === "success") {
           loginAuth(response);
           console.log("Login successful", response);
-          navigate("/shopee");
-          // window
-          // window.location.href =" http://localhost:5173/profile"
+          navigate("/");
         }
       } catch (error) {
         console.log(error);
@@ -152,7 +150,7 @@ const Login = () => {
               <p className="text-sm font-light text-gray-500 dark:text-gray-400">
                 {t("main:SignIn.cheAccountTL")} {"  "}
                 <a
-                  href={"http://localhost:5173/register"}
+                  href={`${HOST_FE}/register`}
                   target="_blank"
                   className="font-medium text-primary-600 hover:underline dark:text-primary-500"
                 >

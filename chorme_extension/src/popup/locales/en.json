@@ -9,5 +9,14 @@
         "loginTL" : "Sign in",
         "cheAccountTL" : "Don’t have an account yet ?",
         "registerTL" : "Sign up"
+    },
+    "Shop": {
+        "Product Name": "Product Name",
+        "Price": "Price",
+        "Product Detail": "Product Detail",
+        "Get Product Detail": "Get Product Detail",
+        "Synchronized Product": "Synchronized Product",
+        "Leave a comment": "Leave a comment"
+
     }
 }

@@ -31,3 +31,13 @@ export const logout = async () => {
         throw error;
     }
 };
+
+export const postData = async (data) => {
+    try {
+        const response = await http.post('/auth/logout', data);
+        return response.data;
+    } catch (error) {
+        console.error('Error logout in', error);
+        throw error;
+    }
+}

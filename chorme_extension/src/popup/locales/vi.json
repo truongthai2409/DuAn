@@ -9,5 +9,17 @@
         "loginTL" : "Đăng nhập",
         "cheAccountTL" : "Bạn chưa có tài khoản ?",
         "registerTL" : "Đăng ký"
+    },
+    "Shop": {
+        "Product Name": "Tên sản phẩm",
+        "Price": "Giá",
+        "Product Detail": "Mô tả sản phẩm",
+        "Get Product Detail": "Lấy thông tin sản phẩm",
+        "Synchronized Product": "Đồng bộ sản phẩm",
+        "Leave a comment": "Chỉnh sửa mô tả"
     }
 }
+
+
+
+

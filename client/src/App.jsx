@@ -2,7 +2,7 @@ import { Navigate, Route, Routes, useLocation } from "react-router-dom";
 import { Toaster } from 'sonner'
 import './i18n/i18n'
 import MainLayout from './MainLayout/MainLayout'
-import HomePage from "./pages/home/index"
+import HomePage from "./pages/Home"
 import ProductManagement from "./pages/ProductManagement/ProductManagement";
 import Inventory from "./pages/Inventory/Inventory";
 import Profile from "./pages/Profile/Profile";

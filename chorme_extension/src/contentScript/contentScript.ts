@@ -75,9 +75,8 @@ function scrapeProductDetails() {
   const images = Array.from(document.querySelectorAll('div.SarUkj.shopee-image-container img'));
   const productNames = document.querySelector('span.oh0Xh2');
   const productDetails = Array.from(document.querySelectorAll('p.QN2lPu'));
-  console.log(productDetails.length)
   const prices = document.querySelector('div.G27FPf');
-  // console.log(productDetails)
+
   const product = {
     productName: productNames?.textContent?.trim() || 'N/A',
     price: prices?.textContent?.trim() || 'N/A',
@@ -100,8 +99,9 @@ function initContentScript() {
 if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', initContentScript);
 } else {
-  setTimeout(() => {
-    initContentScript();
-  }, 3000);
+  // setTimeout(() => {
+  //   initContentScript();
+  // }, 3000);
+  initContentScript();
 }
 

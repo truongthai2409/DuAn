@@ -1,9 +1,8 @@
 import React, { ReactNode } from "react";
-// import { TiThMenu } from "react-icons/ti";
 import Tabs from '../hooks/Tabs';
 import Header from "../components/Header";
-import ShopeeShop from "../components/shopee/ShopeeShop";
 import ShopeeProduct from "../components/shopee/ShopeeProduct";
+import ShopeeShopDetail from "../components/shopee/ShopeeShopDetail";
 
 type TabItem = {
   label: string;
@@ -14,14 +13,14 @@ type TabItem = {
 const Shopee: React.FC = () => {
   const items: TabItem[] = [
     {
-      label: "Shopee",
+      label: "Shopee Product",
       key: "1",
-      children: <ShopeeShop />,
+      children: <ShopeeProduct />,
     },
     {
       label: "Shope detail",
       key: "2",
-      children: <ShopeeProduct />,
+      children: <ShopeeShopDetail />,
     },
   ];
 
