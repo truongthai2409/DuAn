@@ -1,11 +1,11 @@
 import Header from "../../component/Header/Header"
-import { Table, Button, Select, Row, Col, Modal, Input } from "antd"
+import { Table, Button, Select, Row, Col, Modal, Input, Form, Upload, Avatar } from "antd"
 import dataProductManagement from '../../data/ProductManagement.json'
 import { useState, useEffect } from "react";
 import './ProductManagement.css'
 import axios from 'axios';
 import { useTranslation } from "react-i18next";
-
+import { UploadOutlined } from '@ant-design/icons';
 
 
 const ProductManagement = () => {
@@ -21,6 +21,33 @@ const ProductManagement = () => {
     });
     const { t } = useTranslation('function');
     const [isModalOpen, setIsModalOpen] = useState(false);
+
+    const [preview, setPreview] = useState(null)
+    const [initImage, setInitImage] = useState(null)
+    const [file, setFile] = useState(null)
+
+    const [form] = Form.useForm();
+    const [formValues, setFormValues] = useState();
+    const [open, setOpen] = useState(false);
+    const onCreate = async (values) => {
+        const formData = new FormData();
+            formData.append('name', values.name_product);
+            formData.append('price', values.price);
+            formData.append('productDescription', values.description);
+            formData.append('inventory', values.inventory);
+            if (file) {
+              formData.append('image', values.image.file);
+            }
+      
+            await axios.post('http://localhost:5000/product/addProduct', formData, {
+              headers: {
+                'Content-Type': 'multipart/form-data',
+              },
+            });
+        console.log('Received values of form: ', values);
+        setFormValues(values);
+        setOpen(false);
+    };
 
     const showModal = () => {
         setIsModalOpen(true);
@@ -39,8 +66,12 @@ const ProductManagement = () => {
         const fetchData = async () => {
             try {
                 const response = await axios.get('http://localhost:5000/product/all-product');
-                setDataTable(response.data);
-                setInitDataTable(response.data)
+                const dataWithKey = response.data.map((item) => ({
+                    ...item,
+                    key: item._id, // Hoặc dùng item.id nếu có id từ API
+                }));
+                setDataTable(dataWithKey);
+                setInitDataTable(dataWithKey)
                 setLoading(false);
                 console.log(response);
             } catch (error) {
@@ -166,6 +197,21 @@ const ProductManagement = () => {
         },
     ];
 
+    const beforeUpload = (file) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => {
+            setPreview(reader.result);
+            setFile(file)
+        };
+        return false; // Prevent automatic upload
+    };
+
+    const onRemove = () => {
+        setPreview(initImage)
+        setFile(null)
+    }
+
     return (
         <div className="pm-content">
             <Header title='listOfProductsTL' />
@@ -226,7 +272,7 @@ const ProductManagement = () => {
                     </Col>
                 </Row>
                 <Row style={{ paddingTop: 10 }}>
-                    <Button type="primary" onClick={showModal}>Add Product</Button>
+                    <Button type="primary" onClick={() => setOpen(true)}>Add Product</Button>
                 </Row>
             </div>
             <div className="pm-table">
@@ -239,7 +285,7 @@ const ProductManagement = () => {
                     scroll={{ x: "100vw", y: "50vw" }}
                     style={{ maxWidth: "100%", minHeight: "100%" }}
                     pagination={{
-                        pageSize: 6,
+                        pageSize: 5,
                         style: { marginRight: '120px', marginTop: "28px" }
                     }}
                     bordered={true}
@@ -247,10 +293,74 @@ const ProductManagement = () => {
             </div>
 
 
-            <Modal open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
-                <Row>
-                    Name of Product: <Input/>
-                </Row>
+            <Modal
+                open={open}
+                title="Create a new collection"
+                okText="Create"
+                cancelText="Cancel"
+                okButtonProps={{
+                    autoFocus: true,
+                    htmlType: 'submit',
+                }}
+                onCancel={() => setOpen(false)}
+                destroyOnClose
+                modalRender={(dom) => (
+                    <Form
+                        layout="vertical"
+                        form={form}
+                        name="form_in_modal"
+                        initialValues={{
+                            modifier: 'public',
+                        }}
+                        clearOnDestroy
+                        onFinish={(values) => onCreate(values)}
+                    >
+                        {dom}
+                    </Form>
+                )}
+            >
+                <Form.Item
+                    name="name_product"
+                    label="Name of product"
+                    rules={[
+                        {
+                            required: true,
+                            message: 'Please input the name of product!',
+                        },
+                    ]}
+                >
+                    <Input />
+                </Form.Item>
+                <Form.Item
+                    label="Image"
+                    name="image"
+                    rules={[
+                        {
+                            required: true,
+                            message: 'Please choose an image!',
+                        },
+                    ]}
+                >
+                    <Upload beforeUpload={beforeUpload} onRemove={onRemove} multiple="false">
+                        <Button icon={<UploadOutlined />}>Click to Upload</Button>
+                        <Avatar className='block mx-auto my-4' src={preview} size={100} />
+                    </Upload>
+                </Form.Item>
+                <Form.Item name="description" label="Description">
+                    <Input type="textarea" />
+                </Form.Item>
+                <Form.Item name="price" label="Price">
+                    <Input />
+                </Form.Item>
+                <Form.Item name="inventory" label="Inventory">
+                    <Input />
+                </Form.Item>
+                {/* <Form.Item name="modifier" className="collection-create-form_last-form-item">
+                    <Radio.Group>
+                        <Radio value="public">Public</Radio>
+                        <Radio value="private">Private</Radio>
+                    </Radio.Group>
+                </Form.Item> */}
             </Modal>
         </div>
     )

@@ -4,16 +4,19 @@ const AccessToken = require("../models/AccessToken.js")
 
 
 exports.addProductController = async (req, res) => {
-
-    const { image, name, price, productDescription, inventory } = req.body;
+    const user = req.user;
+    const { _id } = user
+    const { name, price, productDescription, inventory } = req.body;
     try {
+        const image = "http://localhost:5000/" + req.file.path;
         // create an instance of a user
         const newProduct = new Product({
             image,
             name,
             price,
             productDescription,
-            inventory
+            inventory,
+            user_id: _id,
         });
         const savedProduct = await newProduct.save(); // save new product into the database
         // const { role, ...user_data } = savedUser._doc;
@@ -35,8 +38,10 @@ exports.addProductController = async (req, res) => {
 }
 
 exports.getAllProductsController = async (req, res) => {
+    const user = req.user;
+    const { _id } = user;
     try {
-        const products = await Product.find({});
+        const products = await Product.find({user_id: _id});
         res.status(200).send(products);
     } catch (error) {
         res.status(500).send(error.message);
@@ -69,6 +74,8 @@ exports.getAllProductsFromLazada = async (req, res) => {
 
 exports.SynchronizeLazadaProducts = async (req, res) => {
     try {
+        const user = req.user;
+        const { _id } = user;
         let products = []
         const accesstoken = await AccessToken.findOne({})
         const aLazadaAPIWithToken = new LazadaAPI("129821", "Kif9GhshgCtasv8nnVVF9IhsrgkCdeNO", 'VIETNAM', accesstoken.accesstoken)
@@ -90,7 +97,8 @@ exports.SynchronizeLazadaProducts = async (req, res) => {
                 name,
                 price,
                 productDescription,
-                inventory
+                inventory,
+                user_id: _id
             });
             return await newProduct.save(); // Save each product into the database
         }));
