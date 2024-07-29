@@ -33,7 +33,7 @@ app.use(express.json());
 app.use('/auth', authRouters);
 app.use('/user', userRouters);
 app.use('/admin', adminRouters);
-app.use('/customer', customerRouters);
+app.use('/customers', customerRouters);
 app.use('/product', productRouters);
 app.use('/payment', paymentRouters);
 

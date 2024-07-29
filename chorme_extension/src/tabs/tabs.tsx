@@ -9,7 +9,7 @@ import Login from './components/Login'
 function Tabs() {
     return (
         <div>
-            <ul>
+            {/* <ul>
                 <li>
                     <Link to="/">Home</Link>
                 </li>
@@ -24,7 +24,7 @@ function Tabs() {
                 <Route path="/" element={<Home />} />
                 <Route path="/about" element={<About />} />
                 <Route path="/login" element={<Login />} />
-            </Routes>
+            </Routes> */}
         </div>
     )
 }
