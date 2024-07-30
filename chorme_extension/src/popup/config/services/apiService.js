@@ -1,4 +1,5 @@
 import { toast } from 'sonner';
+import axios from "axios";
 import http from '../api/apiConfig';
 
 export const loginExten = async (data) => {
@@ -32,11 +33,19 @@ export const logout = async () => {
     }
 };
 
-export const postData = async (data) => {
+export const postData = async (formData) => {
     try {
-        const response = await http.post('/auth/logout', data);
-        return response.data;
+        
+        const response = await axios.post('http://localhost:5000/product/addProduct', formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+        });
+        console.log(response.data)
+        return response.data
+
     } catch (error) {
+        toast.error(`Up load error!`);
         console.error('Error logout in', error);
         throw error;
     }
