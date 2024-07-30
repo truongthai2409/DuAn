@@ -140,3 +140,69 @@ exports.GetCategoryTreeLazada = async (req, res) => {
         })
     }
 }
+
+exports.updateProductController = async (req, res) => {
+    const { _id } = req.body;
+    try {
+        const updateData = req.body;
+
+        const updatedProduct = await Product.findByIdAndUpdate(_id, updateData, { new: true });
+
+        if (!updatedProduct) {
+            return res.status(404).json({ message: 'Product not found' });
+        }
+
+        res.status(200).json({
+            status: "success",
+            code: 200,
+            data: [updatedProduct],
+            message: "Update product success"
+        });
+    } catch (err) {
+        res.status(500).json({
+            status: "error",
+            code: 500,
+            message: err,
+        });
+    }
+    res.end();
+}
+
+exports.getAProductsByIdController = async (req, res) => {
+    const _id = req.params.id
+    try {
+        const product = await Product.findById(_id);
+        res.status(200).send(product);
+    } catch (error) {
+        res.status(500).send(error.message);
+    }
+};
+
+exports.deleteProductController = async (req, res) => {
+    const { ids } = req.body;
+    try {
+        if (!Array.isArray(ids) || !ids.length) {
+            return res.status(400).json({ 
+                status: "failed",
+                code: 400,
+                message: 'Invalid or missing IDs' 
+            });
+        }
+        // console.log(ids);
+        const result = await Product.deleteMany({ _id: { $in: ids } });
+        console.log(result);
+        res.status(200).json({
+            status: "success",
+            code: 200,
+            data: result,
+            message: 'Delete product success'
+        })
+    } catch (err) {
+        res.status(500).json({
+            status: "error",
+            code: 500,
+            message: err,
+        });
+    }
+    res.end()
+}
