@@ -1,15 +1,16 @@
 import Header from "../../component/Header/Header"
-import { Table, Button, Select, Row, Col } from "antd"
+import { Table, Button, Select, Row, Col, Modal, Input, Form, Upload, Avatar } from "antd"
 import dataProductManagement from '../../data/ProductManagement.json'
 import { useState, useEffect } from "react";
 import './ProductManagement.css'
 import axios from 'axios';
 import { useTranslation } from "react-i18next";
-
+import { UploadOutlined } from '@ant-design/icons';
 
 
 const ProductManagement = () => {
     const [dataTable, setDataTable] = useState([]);
+    const [initdataTable, setInitDataTable] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [filter, setFilter] = useState({
@@ -20,11 +21,101 @@ const ProductManagement = () => {
     });
     const { t } = useTranslation('function');
 
+    const [preview, setPreview] = useState(null)
+    const [initImage, setInitImage] = useState(null)
+    const [file, setFile] = useState(null)
+
+    const [form] = Form.useForm();
+    const [formValues, setFormValues] = useState();
+    const [open, setOpen] = useState(false);
+
+    const [openModalUpdate, setOpenModalUpdate] = useState(false)
+    const [idProduct, setIdProduct] = useState([])
+    const [countRowSelected, setCountRowSelected] = useState(0)
+    const [productSelected, setProductSelected] = useState({})
+
+    const [isModalDeleteOpen, setIsModalDeleteOpen] = useState(false);
+
+    const [allProductsSelected, setAllProductsSelected] = useState([]);
+
+    const showModalDelete = () => {
+        setIsModalDeleteOpen(true);
+    };
+    const handleOkDelete = async () => {
+        await axios.delete('http://localhost:5000/product/delete-product', {data: {ids: idProduct}})
+        setIsModalDeleteOpen(false);
+        window.location.reload();
+    };
+    const handleCancelDelete = () => {
+        setIsModalDeleteOpen(false);
+    };
+
+    const onCreate = async (values) => {
+        const formData = new FormData();
+        formData.append('name', values.name_product);
+        formData.append('price', values.price);
+        formData.append('productDescription', values.description);
+        formData.append('inventory', values.inventory);
+        if (file) {
+            formData.append('image', values.image.file);
+        }
+
+        await axios.post('http://localhost:5000/product/addProduct', formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+        });
+        console.log('Received values of form: ', values);
+        setFormValues(values);
+        setOpen(false);
+    };
+
+    const onOpenModalUpdate = async () => {
+        const product = await axios.get('http://localhost:5000/product/get-a-product/' + idProduct[0]);
+        console.log(product);
+        console.log(idProduct[0]);
+        setProductSelected(product.data)
+        setOpenModalUpdate(true)
+    }
+
+    const onUpdate = async (values) => {
+        const formData = new FormData();
+        formData.append('_id', idProduct[0])
+        formData.append('name', values.name_product || productSelected.name);
+        formData.append('price', values.price || productSelected.price);
+        formData.append('productDescription', values.description || productSelected.productDescription);
+        formData.append('inventory', values.inventory || productSelected.inventory);
+        if (file) {
+            formData.append('image', values.image.file);
+        }
+
+        await axios.put('http://localhost:5000/product/update-product', formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+        });
+        console.log('Received values of form: ', values);
+        setFormValues(values);
+        setOpenModalUpdate(false);
+        window.location.reload();
+    };
+
+    const handleDeleteButton = () => {
+        setIsModalDeleteOpen(true);
+        console.log(idProduct);
+    }
+
+
     useEffect(() => {
         const fetchData = async () => {
             try {
                 const response = await axios.get('http://localhost:5000/product/all-product');
-                setDataTable(response.data);
+                const dataWithKey = response.data.map((item) => ({
+                    ...item,
+                    key: item._id, // Hoặc dùng item.id nếu có id từ API
+                }));
+                setDataTable(dataWithKey);
+                setInitDataTable(dataWithKey)
                 setLoading(false);
                 console.log(response);
             } catch (error) {
@@ -35,17 +126,17 @@ const ProductManagement = () => {
         fetchData();
     }, []);
 
-    const optionsProductID = dataProductManagement.map((item) => ({
-        value: item.id,
-        label: item.id,
+    const optionsProductID = initdataTable.map((item) => ({
+        value: item._id,
+        label: item._id,
     }));
 
-    const optionsProductName = dataProductManagement.map((item) => ({
+    const optionsProductName = initdataTable.map((item) => ({
         value: item.name,
         label: item.name,
     }));
 
-    const optionsProductPrice = dataProductManagement.map((item) => ({
+    const optionsProductPrice = initdataTable.map((item) => ({
         value: item.price,
         label: item.price,
     }));
@@ -73,7 +164,7 @@ const ProductManagement = () => {
 
     const handleSearch = () => {
         // Lọc theo tất cả các trường có giá trị
-        const filteredData = dataProductManagement.filter((item) => {
+        const filteredData = initdataTable.filter((item) => {
             let isValid = true;
             for (const key in filter) {
                 if (filter[key] && !item[key].includes(filter[key])) {
@@ -94,7 +185,7 @@ const ProductManagement = () => {
             price: "",
             productDescription: ""
         });
-        setDataTable(dataProductManagement);
+        setDataTable(initdataTable);
     };
 
     const columns = [
@@ -108,20 +199,26 @@ const ProductManagement = () => {
         {
             title: t('nameTL'),
             dataIndex: "name",
-            width: "auto",
+            width: "10vw",
             align: "center"
         },
         {
             title: t('priceTL'),
             dataIndex: "price",
             width: "auto",
-            align: "center"
+            align: "center",
+            render: (text) => {
+                return text.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
+            }
         },
         {
-            title:  t('productDescriptionTL'),
+            title: t('productDescriptionTL'),
             dataIndex: "productDescription",
-            width: "auto",
-            align: "center"
+            width: "20vw",
+            align: "center",
+            render: (text) => {
+                return <div dangerouslySetInnerHTML={{ __html: text }} />
+            }
         },
         {
             title: t('inventoryTL'),
@@ -129,20 +226,49 @@ const ProductManagement = () => {
             width: "auto",
             align: "center"
         },
-        {
-            title: t('buttonTL'),
-            dataIndex: "button",
-            width: "auto",
-            align: "center",
-            render: () => (
-                <div>
-                    <Button style={{marginRight: 5}}>View</Button>
-                    <Button type="primary">Edit</Button>
-                    <Button type="primary" danger style={{marginLeft: 5}}>Delete</Button>
-                </div>
-            ),
-        },
+        // {
+        //     title: t('buttonTL'),
+        //     dataIndex: "button",
+        //     width: "auto",
+        //     align: "center",
+        //     render: () => (
+        //         <div>
+        //             <Button style={{ marginRight: 5 }}>View</Button>
+        //             <Button type="primary">Edit</Button>
+        //             <Button type="primary" danger style={{ marginLeft: 5 }}>Delete</Button>
+        //         </div>
+        //     ),
+        // },
     ];
+
+    const beforeUpload = (file) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => {
+            setPreview(reader.result);
+            setFile(file)
+        };
+        return false; // Prevent automatic upload
+    };
+
+    const onRemove = () => {
+        setPreview(initImage)
+        setFile(null)
+    }
+
+    const rowSelection = {
+        onChange: (selectedRowKeys, selectedRows) => {
+            console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
+            setIdProduct(selectedRowKeys)
+            setCountRowSelected(selectedRows.length)
+            setAllProductsSelected(selectedRows);
+        },
+        getCheckboxProps: (record) => ({
+            disabled: record.name === 'Disabled User',
+            // Column configuration not to be checked
+            name: record.name,
+        }),
+    };
 
     return (
         <div className="pm-content">
@@ -203,22 +329,165 @@ const ProductManagement = () => {
                         <Button style={{ marginLeft: 10 }} onClick={handleCleanFilterButton} type="primary" danger>{t('clearTL')}</Button>
                     </Col>
                 </Row>
+                <Row style={{ paddingTop: 10 }}>
+                    <Button type="primary" onClick={() => setOpen(true)}>Add Product</Button>
+                    <Button type="primary" style={{ backgroundColor: countRowSelected == 1 ? '#4CAF50' : '', marginLeft: 10 }} disabled={countRowSelected != 1} onClick={onOpenModalUpdate}>Update Product</Button>
+                    <Button type="primary" style={{ marginLeft: 10 }} disabled={countRowSelected == 0} danger onClick={handleDeleteButton}>Detele Product</Button>
+                </Row>
             </div>
             <div className="pm-table">
                 <Table
                     rowSelection={{
                         type: "checkbox",
+                        ...rowSelection,
                     }}
                     columns={columns}
                     dataSource={dataTable}
-                    scroll={{ x: "100vw" }}
+                    scroll={{ x: "100vw", y: "50vw" }}
                     style={{ maxWidth: "100%", minHeight: "100%" }}
                     pagination={{
-                        pageSize: 6,
+                        pageSize: 5,
                         style: { marginRight: '120px', marginTop: "28px" }
                     }}
+                    bordered={true}
                 />
             </div>
+
+
+            <Modal
+                open={open}
+                title="Create a new product"
+                okText="Create"
+                cancelText="Cancel"
+                okButtonProps={{
+                    autoFocus: true,
+                    htmlType: 'submit',
+                }}
+                onCancel={() => setOpen(false)}
+                destroyOnClose
+                modalRender={(dom) => (
+                    <Form
+                        layout="vertical"
+                        form={form}
+                        name="form_in_modal"
+                        initialValues={{
+                            modifier: 'public',
+                        }}
+                        clearOnDestroy
+                        onFinish={(values) => onCreate(values)}
+                    >
+                        {dom}
+                    </Form>
+                )}
+            >
+                <Form.Item
+                    name="name_product"
+                    label="Name of product"
+                    rules={[
+                        {
+                            required: true,
+                            message: 'Please input the name of product!',
+                        },
+                    ]}
+                >
+                    <Input />
+                </Form.Item>
+                <Form.Item
+                    label="Image"
+                    name="image"
+                    rules={[
+                        {
+                            required: true,
+                            message: 'Please choose an image!',
+                        },
+                    ]}
+                >
+                    <Upload beforeUpload={beforeUpload} onRemove={onRemove} multiple="false">
+                        <Button icon={<UploadOutlined />}>Click to Upload</Button>
+                        <Avatar className='block mx-auto my-4' src={preview} size={100} />
+                    </Upload>
+                </Form.Item>
+                <Form.Item name="description" label="Description">
+                    <Input type="textarea" />
+                </Form.Item>
+                <Form.Item name="price" label="Price">
+                    <Input />
+                </Form.Item>
+                <Form.Item name="inventory" label="Inventory">
+                    <Input />
+                </Form.Item>
+                {/* <Form.Item name="modifier" className="collection-create-form_last-form-item">
+                    <Radio.Group>
+                        <Radio value="public">Public</Radio>
+                        <Radio value="private">Private</Radio>
+                    </Radio.Group>
+                </Form.Item> */}
+            </Modal>
+
+            <Modal
+                open={openModalUpdate}
+                title="Update product"
+                okText="Update"
+                cancelText="Cancel"
+                okButtonProps={{
+                    autoFocus: true,
+                    htmlType: 'submit',
+                }}
+                onCancel={() => setOpenModalUpdate(false)}
+                destroyOnClose
+                modalRender={(dom) => (
+                    <Form
+                        layout="vertical"
+                        form={form}
+                        name="form_in_modal"
+                        initialValues={{
+                            modifier: 'public',
+                        }}
+                        clearOnDestroy
+                        onFinish={(values) => onUpdate(values)}
+                    >
+                        {dom}
+                    </Form>
+                )}
+            >
+                <Form.Item
+                    name="name_product"
+                    label="Name of product"
+                >
+                    <Input placeholder={productSelected.name} />
+                </Form.Item>
+                <Form.Item
+                    label="Image"
+                    name="image"
+                >
+                    <Upload beforeUpload={beforeUpload} onRemove={onRemove} multiple="false">
+                        <Button icon={<UploadOutlined />}>Click to Upload</Button>
+                        <Avatar className='block mx-auto my-4' src={preview} size={100} />
+                    </Upload>
+                </Form.Item>
+                <Form.Item name="description" label="Description">
+                    <Input type="textarea" placeholder={productSelected.productDescription} />
+                </Form.Item>
+                <Form.Item name="price" label="Price">
+                    <Input placeholder={productSelected.price} />
+                </Form.Item>
+                <Form.Item name="inventory" label="Inventory">
+                    <Input placeholder={productSelected.inventory} />
+                </Form.Item>
+                {/* <Form.Item name="modifier" className="collection-create-form_last-form-item">
+                    <Radio.Group>
+                        <Radio value="public">Public</Radio>
+                        <Radio value="private">Private</Radio>
+                    </Radio.Group>
+                </Form.Item> */}
+            </Modal>
+
+
+            <Modal title="Delete Product" open={isModalDeleteOpen} onOk={handleOkDelete} onCancel={handleCancelDelete}>
+                <h1>Do you want delete all of them ?</h1>
+                <br/>
+                {allProductsSelected.map(item => <p>- {item.name}</p>)}
+            </Modal>
         </div>
     )
 }

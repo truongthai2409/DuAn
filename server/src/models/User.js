@@ -35,7 +35,16 @@ const UserSchema = new mongoose.Schema(
         },
         avatar: {
             type: String,
-        }
+        },
+        phone_number: {
+            type: String
+        },
+        name_store: {
+            type: String
+        },
+        address: {
+            type: String
+        },
     },
     { timestamps: true }
 );

@@ -16,7 +16,7 @@ import {
 } from 'antd'
 import { useTranslation } from 'react-i18next';
 import { UploadOutlined } from '@ant-design/icons';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 import axios from 'axios';
 
@@ -62,8 +62,7 @@ const User = () => {
               },
             });
             console.log(values);
-            navigate("/profile")
-            window.location.href =" http://localhost:5173/profile"
+            window.location.reload();
             // message.success('Form submitted successfully!');
           } catch (error) {
             // message.error('Form submission failed!');
@@ -150,6 +149,56 @@ const User = () => {
 }
 
 const Shop = () => {
+    const [code, setCode] = useState('')
+    const [dataProfile, setDataProfile] = useState({})
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+
+    axios.defaults.withCredentials = true;
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await axios.get('http://localhost:5000/auth/profile');
+                setDataProfile(response.data.data[0]);
+            } catch (error) {
+                setError(error);
+            }
+        };
+        fetchData();
+    }, []);
+
+    const handleChangeInputCode = (value) => {
+        setCode(value)
+    }
+    const generateAccessToken = async () => {
+        await axios.post('http://localhost:5000/lazada/generate-access-token', {codeLoginLazada: code});
+        setCode('')
+        await axios.get('http://localhost:5000/product/sync-product-lazada');
+    }
+    
+    const handleDeleteAccessToken = () => {
+
+    }
+
+    const onFinishShop = async (values) => {
+        try {
+            // Send form data including the file
+            // const formData = new FormData();
+            // formData.append('phone_number', values.phone_number || dataProfile.phone_number);
+            // formData.append('name_store', values.name_store || dataProfile.name_store);
+            // formData.append('address', values.address || dataProfile.address);
+      
+            const res = await axios.put('http://localhost:5000/auth/update-shop', values);
+            // console.log(res);
+            // console.log(formData);
+            window.location.reload();
+          } catch (error) {
+            console.error(error);
+          }
+    };
+    const onFinishShopFailed = (errorInfo) => {
+        console.log('Failed:', errorInfo);
+    };
     return (
         <>
             {/* <h1>My shop</h1> */}
@@ -164,25 +213,27 @@ const Shop = () => {
                         size="Default"
                         style={{ maxWidth: 600 }}
                         className='mt-6'
+                        onFinish={onFinishShop}
+                        onFinishFailed={onFinishShopFailed}
                     >
-                        <Form.Item label="Name Store">
-                            <Input placeholder='Name Store' disabled />
+                        <Form.Item label="Name Store" name="name_store">
+                            <Input placeholder={dataProfile.name_store}  />
                         </Form.Item>
-                        <Form.Item label="Address">
-                            <Input placeholder='Address' disabled />
+                        <Form.Item label="Address" name="address">
+                            <Input placeholder={dataProfile.address}  />
                         </Form.Item>
-                        <Form.Item label="Contact">
-                            <Input placeholder='Contact' disabled />
+                        <Form.Item label="Phone Number" name="phone_number">
+                            <Input placeholder={dataProfile.phone_number}  />
                         </Form.Item>
                         <Form.Item label="Button">
-                            <Button disabled>Save</Button>
+                            <Button htmlType='submit' type='primary'>Save</Button>
                         </Form.Item>
                     </Form>
                 </div>
                 <div className='flex-grow-[5] text-center content-center'>
-                    <h1 className='text-2xl'>Avatar</h1>
-                    <Avatar className='block mx-auto my-4' src={avatar} size={400} />
-                    <Button>Choose Avatar</Button>
+                    <Button type='primary' danger onClick={handleDeleteAccessToken}><Link to='https://auth.lazada.com/oauth/authorize?response_type=code&force_auth=true&redirect_uri=https://abc.com&client_id=129821' rel="noreferrer" target={'_blank'}>Connect to Lazada</Link></Button>
+                    <br/>Code: <Input value={code} onChange={(e) => handleChangeInputCode(e.target.value)}/>
+                    <Button type='primary' style={{marginTop: 5}} onClick={generateAccessToken}>Enter code</Button>
                 </div>
             </div>
 

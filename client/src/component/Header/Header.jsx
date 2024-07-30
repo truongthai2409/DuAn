@@ -40,7 +40,6 @@ const Header = (props) => {
             try {
                 const response = await axios.get('http://localhost:5000/auth/profile');
                 setInitImage("http://localhost:5000/" + response.data.data[0].avatar)
-                console.log("http://localhost:5000/" + response.data.data[0].avatar)
             } catch (error) {
                 console.log(error);
             }
