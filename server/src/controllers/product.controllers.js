@@ -2,6 +2,36 @@ const Product = require("../models/Product.js");
 const LazadaAPI = require('lazada-open-platform-sdk')
 const AccessToken = require("../models/AccessToken.js")
 
+exports.addProductExtensionController = async (req, res) => {
+    const user = req.user;
+    const { _id } = user
+    const { image, name, price, productDescription, inventory } = req.body;
+    try {
+        const newProduct = new Product({
+            image,
+            name,
+            price,
+            productDescription,
+            inventory,
+            user_id: _id,
+        });
+        const savedProduct = await newProduct.save(); 
+        res.status(200).json({
+            status: "success",
+            data: [savedProduct],
+            message:
+                "Product has been successfully created.",
+        });
+    } catch (err) {
+        res.status(500).json({
+            status: "error",
+            code: 500,
+            data: [],
+            message: "Internal Server Error",
+        });
+    }
+    res.end();
+}
 
 exports.addProductController = async (req, res) => {
     const user = req.user;

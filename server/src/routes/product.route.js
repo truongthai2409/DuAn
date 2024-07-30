@@ -1,6 +1,6 @@
 const express = require("express");
-const { addProductController, getAllProductsController, getAllProductsFromLazada, SynchronizeLazadaProducts, GetCategoryTreeLazada, updateProductController, getAProductsByIdController, deleteProductController } = require("../controllers/product.controllers");
-const { Verify } = require("../middleware/verify.middlewares.js");
+const { addProductController, getAllProductsController, getAllProductsFromLazada, SynchronizeLazadaProducts, GetCategoryTreeLazada, updateProductController, getAProductsByIdController, deleteProductController, addProductExtensionController } = require("../controllers/product.controllers");
+const { Verify, verifiToken } = require("../middleware/verify.middlewares.js");
 const { upload } = require("../services/upload.service.js");
 
 const productRouters = express.Router();
@@ -12,6 +12,8 @@ productRouters.post(
     upload.single('image'),
     addProductController
 );
+
+productRouters.post("/add-product-extension", verifiToken, addProductExtensionController);
 
 productRouters.get('/all-product', Verify, getAllProductsController);
 

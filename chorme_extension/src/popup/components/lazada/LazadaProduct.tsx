@@ -2,8 +2,6 @@ import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { postData } from "../../config/services/apiService";
 
-
-
 const LazadaProduct = () => {
   const { t } = useTranslation(["main"]);
   const [images, setImages] = useState<string[]>([]);
@@ -39,10 +37,10 @@ const LazadaProduct = () => {
       }
     });
   };
-  
+
   const handlePostProduct = async () => {
     const formData = {
-      name : productName,
+      name: productName,
       price,
       productDescription: productDetails,
       image: images[1],
@@ -52,7 +50,8 @@ const LazadaProduct = () => {
     const response = await postData(formData);
     console.log(response);
   };
- 
+
+  
 
   return (
     <form className="max-w-sm">

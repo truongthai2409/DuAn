@@ -39,15 +39,18 @@ const ShopeeProduct: React.FC = () => {
   };
 
   const handlePostProduct = async () => {
-    const productPost = {
-      images,
-      productName,
+    const formData = {
+      name: productName,
       price,
-      productDetails,
+      productDescription: productDetails,
+      image: images[1],
+      inventory: "123",
     };
-    const response = await postData(productPost);
+    console.log(formData)
+    const response = await postData(formData);
     console.log(response);
   };
+
 
   return (
     <div>

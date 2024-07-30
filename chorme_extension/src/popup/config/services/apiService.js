@@ -32,21 +32,34 @@ export const logout = async () => {
         throw error;
     }
 };
-
 export const postData = async (formData) => {
     try {
-        
-        const response = await axios.post('http://localhost:5000/product/addProduct', formData, {
-            headers: {
-                'Content-Type': 'multipart/form-data',
-            },
-        });
-        console.log(response.data)
-        return response.data
+        console.log(formData)
+        let token = localStorage.getItem('authToken');
+        token = token ? token.trim() : '';
 
+        // Create a new FormData object
+        const data = new FormData();
+        for (const key in formData) {
+            data.append(key, formData[key]);
+        }
+
+        const response = await axios.post(
+            `${process.env.API_BE}/product/add-product-extension`, // Ensure the URL is correct
+            data, // The FormData object goes here
+            {
+                headers: {
+                    "Content-Type": "application/json",
+                    'Authorization': `Bearer ${token}` // Include the token in the Authorization header
+                },
+            }
+        );
+
+        console.log(response.data);
+        return response.data;
     } catch (error) {
-        toast.error(`Up load error!`);
-        console.error('Error logout in', error);
+        toast.error('Upload error!');
+        console.error('Error uploading', error.message);
         throw error;
     }
-}
+};
