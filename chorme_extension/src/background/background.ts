@@ -44,12 +44,12 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         console.log("Product details saved to storage");
       });
       break;
-    // case !!message.dataProfile:
-    //   console.log("Product details:", message.dataProfile);
-    //   chrome.storage.local.set({ products: message.dataProfile }, () => {
-    //     console.log("Product details saved to storage");
-    //   });
-    //   break;
+    case !!message.dataProfile:
+      console.log("Product details:", message.dataProfile);
+      chrome.storage.local.set({ products: message.dataProfile }, () => {
+        console.log("Product details saved to storage");
+      });
+      break;
     default:
       console.log("Unknown product source");
   }

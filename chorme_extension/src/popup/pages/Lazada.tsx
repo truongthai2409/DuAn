@@ -17,11 +17,11 @@ const Lazada = () => {
       key: "1",
       children: <LazadaProduct />,
     },
-    {
-      label: "Shop detail",
-      key: "2",
-      children: <LazadaShop />,
-    },
+    // {
+    //   label: "Shop detail",
+    //   key: "2",
+    //   children: <LazadaShop />,
+    // },
   ];
   return (
     <>

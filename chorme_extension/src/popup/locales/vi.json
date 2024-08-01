@@ -8,19 +8,30 @@
         "saveLoginTL" : "Lưu phiên đăng nhập",
         "loginTL" : "Đăng nhập",
         "cheAccountTL" : "Bạn chưa có tài khoản ?",
-        "registerTL" : "Đăng ký"
+        "registerTL" : "Đăng ký",
+        "logoutTL": "Đăng xuất"
     },
     "Shop": {
         "Product Name": "Tên sản phẩm",
         "Price": "Giá",
         "Product Detail": "Mô tả sản phẩm",
         "Get Product Detail": "Lấy thông tin sản phẩm",
+        "Get Customer Detail": "Lấy thông tin khách hàng",
         "Synchronized Product": "Đồng bộ sản phẩm",
-        "Leave a comment": "Chỉnh sửa mô tả"
+        "Synchronized Customer": "Đồng bộ khách hàng",
+        "Leave a comment": "Chỉnh sửa mô tả",
+        "Inventory": "Hàng tồn kho",
+        "Get Shop Detail": "Lấy thông tin cửa hàng",
+        "Customer": "Khách hàng",
+        "Address": "Địa chỉ",
+        "Code": "Mã khách hàng",
+        "Phone": "Số điện thoại"
     },
     "Messages": {
         "Error Choose Ecommerces": "Vui lòng chọn đúng sàn thương mại điện tử phù hợp",
-        "Error Connecting": "Đã xảy ra lỗi khi tải trang. Vui lòng làm mới trang và thử lại."
+        "Error Connecting": "Đã xảy ra lỗi khi tải trang. Vui lòng làm mới trang và thử lại.",
+        "Upload Error": "Đồng bộ thất bại!" ,
+        "Upload Success": "Đồng bộ thành công!" 
     }
 }
 

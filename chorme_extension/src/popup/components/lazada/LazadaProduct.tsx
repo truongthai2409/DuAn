@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { postData } from "../../config/services/apiService";
+import { toast } from "sonner";
 
 const LazadaProduct = () => {
   const { t } = useTranslation(["main"]);
@@ -8,6 +9,7 @@ const LazadaProduct = () => {
   const [productName, setProductName] = useState<string>("");
   const [price, setPrice] = useState<string>("");
   const [productDetails, setProductDetails] = useState<string>("");
+  const [inventory, setInventory] = useState<number>(null);
 
   const handleScrape = () => {
     chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
@@ -44,11 +46,15 @@ const LazadaProduct = () => {
       price,
       productDescription: productDetails,
       image: images[1],
-      inventory: "123",
+      inventory
     };
-    console.log(formData)
-    const response = await postData(formData);
-    console.log(response);
+    try {
+      const response = await postData(formData,'/product/add-product-extension');
+      console.log(response)
+      toast.success(t('main:Messages.Upload Success'));
+    } catch (error) {
+      toast.error(t('main:Messages.Upload Error'));
+    }
   };
 
   
@@ -60,11 +66,14 @@ const LazadaProduct = () => {
           htmlFor="id_store"
           className="block w-[170px] align-center mb-2 text-xs font-medium text-gray-700 dark:text-white"
         >
-          ID Store:
+          {t('main:Shop.Inventory')}
         </label>
         <input
-          type="text"
+          required
+          type="number"
           id="id_store"
+          value={inventory}
+          onChange={(e) => setInventory(parseInt(e.target.value))}
           className="block w-full p-2 mb-2 text-xs text-gray-700 border border-gray-300 rounded-lg bg-gray-50 focus:ring-gray-500 focus:border-gray-500"
         />
       </div>
@@ -76,6 +85,7 @@ const LazadaProduct = () => {
           {t("main:Shop.Product Name")}:
         </label>
         <input
+          required
           type="text"
           id="product_name"
           value={productName}
@@ -91,6 +101,7 @@ const LazadaProduct = () => {
           {t("main:Shop.Price")}:
         </label>
         <input
+          required
           type="text"
           id="price"
           value={price}

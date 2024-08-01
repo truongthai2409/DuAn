@@ -8,6 +8,7 @@ import { useAuth } from "../hooks/useAuth";
 const HOST_FE = process.env.HOST_FE;
 
 const Header = () => {
+  const { t } = useTranslation(["main"]);
   const { i18n } = useTranslation();
   const { logoutAuth } = useAuth();
   const changeLanguage = (lng: any) => {
@@ -50,13 +51,12 @@ const Header = () => {
       </div>
       <div className="absolute right-3 top-4">
         <Dropdown label={<TiThMenu />}>
-          <a
-            href={`${HOST_FE}/register`}
+          <Link
             className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-            target="_blank"
+            to="/customer"
           >
-            Sign Up
-          </a>
+            {t("main:Shop.Customer")}
+          </Link>
           <Link
             className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
             to="/shopee"
@@ -69,12 +69,19 @@ const Header = () => {
           >
             Lazada
           </Link>
+          <a
+            href={`${HOST_FE}/register`}
+            className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+            target="_blank"
+          >
+            {t("main:SignIn.registerTL")}
+          </a>
           <Link
             className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
             to="/login"
             onClick={handleLogout}
           >
-            Logout
+            {t("main:SignIn.logoutTL")}
           </Link>
         </Dropdown>
       </div>

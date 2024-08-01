@@ -8,18 +8,29 @@
         "saveLoginTL" : "Remember me",
         "loginTL" : "Sign in",
         "cheAccountTL" : "Don’t have an account yet ?",
-        "registerTL" : "Sign up"
+        "registerTL" : "Sign up",
+        "logoutTL": "Logout"
     },
     "Shop": {
         "Product Name": "Product Name",
         "Price": "Price",
         "Product Detail": "Product Detail",
         "Get Product Detail": "Get Product Detail",
+        "Get Customer Detail": "Get Customer Detail",
         "Synchronized Product": "Synchronized Product",
-        "Leave a comment": "Leave a comment"
+        "Synchronized Customer": "Synchronized Customer",
+        "Leave a comment": "Leave a comment",
+        "Inventory": "Inventory",
+        "Get Shop Detail": "Get Shop Detail",
+        "Customer": "Customer",
+        "Address": "Address",
+        "Code": "Customer Id",
+        "Phone": "Phone"
     },
     "Messages": {
         "Error Choose Ecommerces": "Please select the appropriate e-commerce platform",
-        "Error Connecting": "There was an error communicating with the page. Please refresh the page and try again."
+        "Error Connecting": "There was an error communicating with the page. Please refresh the page and try again.",
+        "Upload Error": "Upload Error!",
+        "Upload Success": "Upload Success!"
     }
 }

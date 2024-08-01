@@ -5,8 +5,16 @@ function scrapeProductShopeeDetails() {
   const productNames = document.querySelector("span.oh0Xh2");
   const productDetails = Array.from(document.querySelectorAll("p.QN2lPu"));
   const prices = document.querySelector("div.G27FPf");
+  const inventoryContainer = document.querySelector("div.flex.KIoPj6.W5LiQM");
+  const inventoryText = inventoryContainer.querySelector(
+    "div.flex.items-center > div:nth-child(2)"
+  ).textContent;
+  const availableProducts = inventoryText.match(/(\d+) sản phẩm có sẵn/)[1];
+
+  console.log(`${availableProducts}`);
 
   const product = {
+    inventory: availableProducts || "0",
     productName: productNames?.textContent?.trim() || "N/A",
     price: prices?.textContent?.trim() || "N/A",
     image: images.map((img) => (img as HTMLImageElement).src),
@@ -40,6 +48,27 @@ function scrapeProductLazadaDetails() {
   return product;
 }
 
+function scrapeProfileLazadaDetails() {
+
+  const panelBuyerInfo = document.querySelector('div[data-spm="panel_buyer_info"]');
+  const addressInfor = document.querySelector(".order-field-shipping-address .order-field-value .show-text")?.textContent?.trim();
+  const buyerInfor = panelBuyerInfo.querySelector('.show-text.copy-text-item.hover-show-edit.break-all')?.textContent?.trim();
+  const emailInfor = panelBuyerInfo.querySelector('.order-field-email .order-field-value .show-text')?.textContent?.trim();
+  const phoneInfor = panelBuyerInfo.querySelector('.order-field.order-field-customer-phone').querySelector('.show-text.copy-text-item.hover-show-edit.break-all')?.textContent?.trim();
+  const codeInfor = panelBuyerInfo.querySelector('.order-field.order-field-customer-id').querySelector('.order-field-value')?.textContent?.trim();
+
+  const product = {
+    address: addressInfor || "N/A",
+    name: buyerInfor || "N/A",
+    email: emailInfor || "N/A",
+    code: codeInfor || "N/A",
+    phone: phoneInfor || "N/A",
+  };
+  console.log(product)
+
+  return product;
+}
+
 function getShopProfile() {
   const cacheName = "CHAT_API";
   let newData = {};
@@ -52,11 +81,11 @@ function getShopProfile() {
             if (response) {
               response.json().then((data) => {
                 console.log("Data for", key.url, ":", data);
-                newData = { 
+                newData = {
                   user_id: data.user_id,
                   image: data.image,
-                  name: data.name
-                }
+                  name: data.name,
+                };
               });
             }
           });
@@ -66,10 +95,9 @@ function getShopProfile() {
     .catch((error) => {
       console.error("Error opening cache:", error);
     });
-    console.log(newData)
-    return newData;
+  console.log(newData);
+  return newData;
 }
-// getShopProfile();
 
 function initContentScript() {
   chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
@@ -83,12 +111,11 @@ function initContentScript() {
       chrome.runtime.sendMessage({ lazadaProducts });
       sendResponse({ success: true });
     }
-    // if (message.action === "getShopeeProfile") {
-    //   const dataProfile = getShopProfile();
-    //   chrome.runtime.sendMessage({ dataProfile });
-    //   sendResponse({ success: true });
-    // }
-    
+    if (message.action === "getLazadaProfile") {
+      const dataProfile = scrapeProfileLazadaDetails();
+      chrome.runtime.sendMessage({ dataProfile });
+      sendResponse({ success: true });
+    }
   });
 }
 

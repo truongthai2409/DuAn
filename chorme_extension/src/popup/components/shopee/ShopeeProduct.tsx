@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { postData } from "../../config/services/apiService";
 import { useTranslation } from "react-i18next";
+import { toast } from "sonner";
 
 const ShopeeProduct: React.FC = () => {
   const { t } = useTranslation(["main"]);
   const [images, setImages] = useState<string[]>([]);
   const [productName, setProductName] = useState<string>("");
   const [price, setPrice] = useState<string>("");
-  const [productDetails, setProductDetails] = useState<string>("");
+  const [productDetails, setProductDetail] = useState<string>("");
+  const [inventory, setInventory] = useState<number>(null);
 
   const handleScrape = () => {
     chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
@@ -26,7 +28,8 @@ const ShopeeProduct: React.FC = () => {
                   setImages(result.products.image);
                   setProductName(result.products.productName);
                   setPrice(result.products.price);
-                  setProductDetails(result.products.productDetails);
+                  setProductDetail(result.products.productDetails);
+                  setInventory(result.products.inventory);
                 }
               });
             }
@@ -44,11 +47,15 @@ const ShopeeProduct: React.FC = () => {
       price,
       productDescription: productDetails,
       image: images[1],
-      inventory: "123",
+      inventory
     };
-    console.log(formData)
-    const response = await postData(formData);
-    console.log(response);
+    try {
+      const response = await postData(formData,'/product/add-product-extension');
+      console.log(response)
+      toast.success(t('main:Messages.Upload Success'));
+    } catch (error) {
+      toast.error(t('main:Messages.Upload Error'));
+    }
   };
 
 
@@ -60,11 +67,14 @@ const ShopeeProduct: React.FC = () => {
             htmlFor="id_store"
             className="block w-[170px] align-center mb-2 text-xs font-medium text-gray-700 dark:text-white"
           >
-            ID Store:
+            {t('main:Shop.Inventory')}
           </label>
           <input
-            type="text"
+            required
+            type="number"
             id="id_store"
+            value={inventory}
+            onChange={(e) => setInventory(parseInt(e.target.value))}
             className="block w-full p-2 mb-2 text-xs text-gray-700 border border-gray-300 rounded-lg bg-gray-50 focus:ring-gray-500 focus:border-gray-500"
           />
         </div>
@@ -76,6 +86,7 @@ const ShopeeProduct: React.FC = () => {
             {t("main:Shop.Product Name")}:
           </label>
           <input
+            required
             type="text"
             id="product_name"
             value={productName}
@@ -91,6 +102,7 @@ const ShopeeProduct: React.FC = () => {
             {t("main:Shop.Price")}:
           </label>
           <input
+            required
             type="text"
             id="price"
             value={price}
@@ -106,10 +118,11 @@ const ShopeeProduct: React.FC = () => {
             {t("main:Shop.Product Detail")}:
           </label>
           <textarea
+            required
             id="product_detail"
             rows={4}
             value={productDetails}
-            onChange={(e) => setProductDetails(e.target.value)}
+            onChange={(e) => setProductDetail(e.target.value)}
             className="block p-2.5 w-full text-xs text-gray-700 bg-gray-50 rounded-lg border border-gray-300 focus:ring-gray-500 focus:border-gray-500"
             placeholder={t("main:Shop.Leave a comment")}
           ></textarea>

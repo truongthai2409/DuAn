@@ -1,13 +1,14 @@
 const express = require("express");
-const { addCustomerController, getAllCustomerController, getCustomerController, putchCustomerController, deleteCustomerController } = require("../controllers/customer.controllers");
+const { addCustomerController, getAllCustomerController, getCustomerController, patchCustomerController, deleteCustomerController } = require("../controllers/customer.controllers");
 const validateCustomer = require("../middleware/customer.middleware");
+const { Verify } = require("../middleware/verify.middlewares");
 
 const customerRouters = express.Router();
 
 customerRouters.post('/addCustomer', validateCustomer, addCustomerController);
-customerRouters.get('/', getAllCustomerController);  // getALl
-customerRouters.get('/:id', getCustomerController);  // get id
-customerRouters.put('/:id', validateCustomer, putchCustomerController);  //  put id
-customerRouters.delete('/:id', deleteCustomerController);  // get id
+customerRouters.get('/', Verify, getAllCustomerController);  // getALl
+customerRouters.get('/:id', Verify, getCustomerController);  // get id
+customerRouters.patch('/:id' , Verify, patchCustomerController);  //  put id
+customerRouters.delete('/:id', Verify, deleteCustomerController);  // get id
 
 module.exports = customerRouters;

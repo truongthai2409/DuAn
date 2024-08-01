@@ -32,20 +32,20 @@ export const logout = async () => {
         throw error;
     }
 };
-export const postData = async (formData) => {
+export const postData = async (formData, URL) => {
+ 
     try {
         console.log(formData)
         let token = localStorage.getItem('authToken');
         token = token ? token.trim() : '';
-
         // Create a new FormData object
         const data = new FormData();
         for (const key in formData) {
             data.append(key, formData[key]);
         }
-
         const response = await axios.post(
-            `${process.env.API_BE}/product/add-product-extension`, // Ensure the URL is correct
+            // `${process.env.API_BE}/product/add-product-extension`, // Ensure the URL is correct
+            `${process.env.API_BE}${URL}`, // Ensure the URL is correct
             data, // The FormData object goes here
             {
                 headers: {
@@ -54,11 +54,8 @@ export const postData = async (formData) => {
                 },
             }
         );
-
-        console.log(response.data);
         return response.data;
     } catch (error) {
-        toast.error('Upload error!');
         console.error('Error uploading', error.message);
         throw error;
     }
