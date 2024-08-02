@@ -11,6 +11,8 @@ import RegesterPage from "./pages/Regester/Regester";
 import OrderManagement from "./pages/OrderManagement/OrderManagement";
 import CustomerManagement from "./pages/CustomerManagement/CustomerManagement";
 import PrivateRoute from "./config/routing/PrivateRoute";
+import CustomerCare from "./pages/CustomerCare/CustomerCare";
+import Develop from "./pages/Develop/Develop";
 
 function App() {
   return (
@@ -27,6 +29,13 @@ function App() {
           <Route path="profile" element={<Profile />} />
           <Route path="listOfOrders" element={<OrderManagement />} />
           <Route path="listOfCustomers" element={<CustomerManagement />} />
+          <Route path="customerCare" element={<CustomerCare />} />
+          <Route path="salesReport" element={<Develop />} />
+          <Route path="performanceAnalysis" element={<Develop />} />
+          <Route path="export-import-warehouse" element={<Develop />} />
+          <Route path="warehouseInventory" element={<Develop />} />
+          <Route path="shippingIntegration" element={<Develop />} />
+          <Route path="notification" element={<Develop />} />
         </Route>
       </Routes>
     </>

@@ -83,7 +83,6 @@ const CustomerManagement = () => {
     const save = async (id) => {
         try {
             const row = await form.validateFields();
-            // console.log(row, id)
             await axios.patch(`${baseURL}/customers/${id}`, row);
             message.success('Customer updated successfully');
             setEditingKey('');
@@ -98,6 +97,13 @@ const CustomerManagement = () => {
         {
             title: "Name",
             dataIndex: "name",
+            width: "auto",
+            align: "center",
+            editable: true,
+        },
+        {
+            title: "Email",
+            dataIndex: "email",
             width: "auto",
             align: "center",
             editable: true,
@@ -234,13 +240,6 @@ const CustomerManagement = () => {
         label: item.address,
     }));
 
-    const handleChangeFilterCustomerID = (value) => {
-        setFilter((prevState) => ({
-            ...prevState,
-            id: value,
-        }));
-    };
-
     const handleChangeFilterCustomerName = (value) => {
         setFilter((prevState) => ({
             ...prevState,
@@ -301,7 +300,6 @@ const CustomerManagement = () => {
             <Header title='listOfCustomersTL' />
             <div className="pm-filter">
                 <Row>
-                    
                     <Col span={8}>
                         <Select
                             style={{
