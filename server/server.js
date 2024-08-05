@@ -12,6 +12,7 @@ const productRouters = require("./src/routes/product.route.js");
 const lazadaRouters = require("./src/routes/lazada.route.js")
 const path = require('path');
 const paymentRouters = require("./src/routes/payment.router.js");
+const orderRouters = require("./src/routes/order.route.js");
 
 const app = express();
 const httpServer = createServer(app);
@@ -38,7 +39,7 @@ app.use('/customers', customerRouters);
 app.use('/product', productRouters);
 app.use('/payment', paymentRouters);
 app.use('/lazada', lazadaRouters);
-
+app.use('/order', orderRouters);
 
 httpServer.listen(PORT, () =>
     console.log(`Server running on http://localhost:${PORT}`)

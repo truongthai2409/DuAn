@@ -1,33 +1,56 @@
 import Header from "../../component/Header/Header"
 import { Table, Button, Select, Row, Col, Input } from "antd"
-import dataOrderManagement from '../../data/OrderManagement.json'
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import './OrderManagement.css'
 import { useTranslation } from "react-i18next";
-
+import axios from 'axios';
 
 const OrderManagement = () => {
-    const [dataTable, setDataTable] = useState(dataOrderManagement);
+    const [dataTable, setDataTable] = useState([]);
+    const [initdataTable, setInitDataTable] = useState([]);
     const [filter, setFilter] = useState({
-        id: "",
-        name: "",
+        order_id_lazada: "",
+        name_order: "",
         customer: "",
         status: "",
-        shippingUnit: ""
+        shipping_unit: ""
     });
+    const [restartTable, setRestartTable] = useState(0)
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
     const { t } = useTranslation('function');
 
-    const optionsProductID = dataOrderManagement.map((item) => ({
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await axios.get('http://localhost:5000/order/all-orders');
+                const dataWithKey = response.data.map((item) => ({
+                    ...item,
+                    key: item._id, // Hoặc dùng item.id nếu có id từ API
+                }));
+                setDataTable(dataWithKey);
+                setInitDataTable(dataWithKey)
+                setLoading(false);
+                console.log(response);
+            } catch (error) {
+                setError(error);
+                setLoading(false);
+            }
+        };
+        fetchData();
+    }, []);
+
+    const optionsProductID = dataTable.map((item) => ({
         value: item.id,
         label: item.id,
     }));
 
-    const optionsProductName = dataOrderManagement.map((item) => ({
+    const optionsProductName = dataTable.map((item) => ({
         value: item.name,
         label: item.name,
     }));
 
-    const optionsProductCustomer = dataOrderManagement.map((item) => ({
+    const optionsProductCustomer = dataTable.map((item) => ({
         value: item.customer,
         label: item.customer,
     }));
@@ -42,20 +65,20 @@ const OrderManagement = () => {
     const handleChangeFilterProductName = (value) => {
         setFilter((prevState) => ({
             ...prevState,
-            name: value,
+            name_order: value,
         }));
     };
 
     const handleChangeFilterProductCustomer = (value) => {
         setFilter((prevState) => ({
             ...prevState,
-            customer: value,
+            name_customer: value,
         }));
     };
 
     const handleSearch = () => {
         // Lọc theo tất cả các trường có giá trị
-        const filteredData = dataOrderManagement.filter((item) => {
+        const filteredData = initdataTable.filter((item) => {
             let isValid = true;
             for (const key in filter) {
                 if (filter[key] && !item[key].includes(filter[key])) {
@@ -66,29 +89,31 @@ const OrderManagement = () => {
             return isValid;
         });
         // Cập nhật state của bảng với kết quả tìm kiếm
+        console.log(filteredData);
+        
         setDataTable(filteredData);
     };
 
     const handleCleanFilterButton = () => {
         setFilter({
-            id: "",
-            name: "",
-            customer: "",
+            order_id_lazada: "",
+            name_order: "",
+            name_customer: "",
             status: "",
-            shippingUnit: ""
+            shipping_unit: ""
         });
-        setDataTable(dataOrderManagement);
+        setDataTable(initdataTable);
     };
     const columns = [
         {
             title: "ID",
-            dataIndex: "id",
+            dataIndex: "order_id_lazada",
             width: "auto",
             align: "center",
         },
         {
             title: t('customerTL'),
-            dataIndex: "customer",
+            dataIndex: "name_customer",
             width: "auto",
             align: "center"
         },
@@ -101,7 +126,7 @@ const OrderManagement = () => {
         },
         {
             title: t('nameTL'),
-            dataIndex: "name",
+            dataIndex: "name_order",
             width: "auto",
             align: "center"
         },
@@ -125,22 +150,9 @@ const OrderManagement = () => {
         },
         {
             title: t('shippingUnit'),
-            dataIndex: "shippingUnit",
+            dataIndex: "shipping_unit",
             width: "auto",
             align: "center"
-        },
-        {
-            title: t('buttonTL'),
-            dataIndex: "button",
-            width: "auto",
-            align: "center",
-            render: () => (
-                <div>
-                    <Button style={{ marginRight: 5 }}>View</Button>
-                    <Button type="primary">Edit</Button>
-                    <Button type="primary" danger style={{ marginLeft: 5 }}>Delete</Button>
-                </div>
-            ),
         },
     ];
 
@@ -150,21 +162,6 @@ const OrderManagement = () => {
             <div className="pm-filter">
                 <Row>
                     <Col span={4}>
-                        {/* <Select
-                            style={{
-                                height: "32px",
-                                width: "95%",
-
-                                fontSize: "15px",
-                            }}
-                            className="select-placeholder"
-                            showSearch
-                            defaultValue=""
-                            placeholder={"Enter Product's ID"}
-                            options={optionsProductID}
-                            onChange={handleChangeFilterProductID}
-                            value={filter.id || null}
-                        /> */}
                         <Input
                             style={{
                                 height: "32px",
@@ -173,26 +170,12 @@ const OrderManagement = () => {
                                 fontSize: "15px",
                             }}
                             defaultValue=""
-                            placeholder={"Enter Product's ID"}
+                            placeholder={"Enter Order's ID"}
                             onChange={e => handleChangeFilterProductID(e.target.value)}
                             value={filter.id || null}
                         />
                     </Col>
                     <Col span={8}>
-                        {/* <Select
-                            style={{
-                                height: "32px",
-                                width: "95%",
-                                fontSize: "15px",
-                            }}
-                            className="select-placeholder"
-                            showSearch
-                            defaultValue=""
-                            placeholder={"Enter Product's Name"}
-                            options={optionsProductName}
-                            onChange={handleChangeFilterProductName}
-                            value={filter.name || null}
-                        /> */}
                         <Input
                             style={{
                                 height: "32px",
@@ -203,23 +186,21 @@ const OrderManagement = () => {
                             defaultValue=""
                             placeholder={"Enter Product's Name"}
                             onChange={e => handleChangeFilterProductName(e.target.value)}
-                            value={filter.name || null}
+                            value={filter.name_order || null}
                         />
                     </Col>
                     <Col span={4}>
-                        <Select
+                        <Input
                             style={{
                                 height: "32px",
                                 width: "95%",
+
                                 fontSize: "15px",
                             }}
-                            className="select-placeholder"
-                            showSearch
                             defaultValue=""
                             placeholder={"Enter Product's Customer"}
-                            options={optionsProductCustomer}
-                            onChange={handleChangeFilterProductCustomer}
-                            value={filter.customer || null}
+                            onChange={e => handleChangeFilterProductCustomer(e.target.value)}
+                            value={filter.name_customer || null}
                         />
                     </Col>
                     <Col span={5} offset={2}>
