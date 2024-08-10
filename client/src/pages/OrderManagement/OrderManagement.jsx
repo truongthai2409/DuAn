@@ -1,9 +1,11 @@
 import Header from "../../component/Header/Header"
-import { Table, Button, Select, Row, Col, Input } from "antd"
-import { useState, useEffect } from "react";
+import { Table, Button, Select, Row, Col, Input, Divider } from "antd"
+import { useState, useEffect, useRef } from "react";
 import './OrderManagement.css'
 import { useTranslation } from "react-i18next";
 import axios from 'axios';
+import imgLogo from '../../assets/images/logo.png'
+import { useReactToPrint } from 'react-to-print'
 
 const OrderManagement = () => {
     const [dataTable, setDataTable] = useState([]);
@@ -19,6 +21,9 @@ const OrderManagement = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const { t } = useTranslation('function');
+    const [dataProfile, setDataProfile] = useState({})
+    const [dataPrint, setDataPrint] = useState({})
+    const [countRowSelected, setCountRowSelected] = useState(0)
 
     useEffect(() => {
         const fetchData = async () => {
@@ -35,6 +40,18 @@ const OrderManagement = () => {
             } catch (error) {
                 setError(error);
                 setLoading(false);
+            }
+        };
+        fetchData();
+    }, []);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await axios.get('http://localhost:5000/auth/profile');
+                setDataProfile(response.data.data[0]);
+            } catch (error) {
+                setError(error);
             }
         };
         fetchData();
@@ -76,21 +93,35 @@ const OrderManagement = () => {
         }));
     };
 
+    const removeVietnameseTones = (str) => {
+        str = str.normalize('NFD').replace(/[\u0300-\u036f]/g, ''); // Loại bỏ dấu
+        str = str.replace(/đ/g, 'd').replace(/Đ/g, 'D'); // Chuyển đổi chữ đ
+        return str;
+    };
+
     const handleSearch = () => {
         // Lọc theo tất cả các trường có giá trị
         const filteredData = initdataTable.filter((item) => {
             let isValid = true;
             for (const key in filter) {
-                if (filter[key] && !item[key].includes(filter[key])) {
-                    isValid = false;
-                    break;
+                // if (filter[key] && !item[key].includes(filter[key])) {
+                //     isValid = false;
+                //     break;
+                // }
+                if (filter[key]) {
+                    const filterValue = removeVietnameseTones(filter[key].toLowerCase());
+                    const itemValue = removeVietnameseTones(item[key].toLowerCase());
+                    if (!itemValue.includes(filterValue)) {
+                        isValid = false;
+                        break;
+                    }
                 }
             }
             return isValid;
         });
         // Cập nhật state của bảng với kết quả tìm kiếm
         console.log(filteredData);
-        
+
         setDataTable(filteredData);
     };
 
@@ -156,6 +187,28 @@ const OrderManagement = () => {
         },
     ];
 
+    const rowSelection = {
+        onChange: (selectedRowKeys, selectedRows) => {
+            // console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
+            // setIdProduct(selectedRowKeys)
+            setCountRowSelected(selectedRows.length)
+            // setAllProductsSelected(selectedRows);
+            setDataPrint(selectedRows[0])
+        },
+        getCheckboxProps: (record) => ({
+            disabled: record.name === 'Disabled User',
+            // Column configuration not to be checked
+            name: record.name,
+        }),
+    };
+
+
+    // handle print order
+    const componentRef = useRef();
+    const handlePrint = useReactToPrint({
+        content: () => componentRef.current,
+    });
+
     return (
         <div className="pm-content">
             <Header title='listOfOrdersTL' />
@@ -208,11 +261,17 @@ const OrderManagement = () => {
                         <Button style={{ marginLeft: 10 }} onClick={handleCleanFilterButton} type="primary" danger>{t('clearTL')}</Button>
                     </Col>
                 </Row>
+                <Row style={{ paddingTop: 10 }}>
+                    <Button type="primary" onClick={handlePrint}  disabled={countRowSelected != 1}>Print Order</Button>
+                    {/* <Button type="primary" style={{ backgroundColor: countRowSelected == 1 ? '#4CAF50' : '', marginLeft: 10 }} disabled={countRowSelected != 1} onClick={onOpenModalUpdate}>Update Product</Button>
+                    <Button type="primary" style={{ marginLeft: 10 }} disabled={countRowSelected == 0} danger onClick={handleDeleteButton}>Detele Product</Button> */}
+                </Row>
             </div>
             <div className="pm-table">
                 <Table
                     rowSelection={{
                         type: "checkbox",
+                        ...rowSelection,
                     }}
                     columns={columns}
                     dataSource={dataTable}
@@ -223,6 +282,41 @@ const OrderManagement = () => {
                         style: { marginRight: '120px', marginTop: "28px" }
                     }}
                 />
+            </div>
+            
+            <div hidden>
+                <div ref={componentRef}>
+                    <Row style={{margin: "0 10px"}}>
+                        <Col span={8}>
+                            <img src={imgLogo} />
+                        </Col>
+                        <Col span={8} style={{textAlign: "center"}}>
+                            <h1 style={{fontSize: 20}}>HÓA ĐƠN BÁN HÀNG</h1>
+                            <p>{new Date(Date.now()).toDateString()}</p>
+                        </Col>
+                        <Col span={8}>
+                            Số hóa đơn: {dataPrint?.order_id_lazada}
+                        </Col>
+                    </Row>
+                    <Divider />
+                    <div style={{margin: "0 10px"}}>
+                        <h1 style={{fontSize: 20}}>{dataProfile.name_store}</h1>
+                        <p>Địa chỉ: {dataProfile.address}</p>
+                        <p>Số điện thoại: {dataProfile.phone_number}</p>
+                    </div>
+                    <Divider />
+                    <div style={{margin: "0 10px"}}>
+                        <p>Họ tên người mua hàng: {dataPrint?.name_customer || ""}</p>
+                        <p>Địa chỉ: </p>
+                    </div>
+                    <Divider />
+                    <div style={{margin: "0 10px"}}>
+                        <p>Sản phẩm</p>
+                        <p>Tên sản phẩm: {dataPrint?.name_order || ""}</p>
+                        <p>Số lượng: {dataPrint?.quantity || ""}</p>
+                        <p>Giá: {dataPrint?.price || ""} đ</p>
+                    </div>
+                </div>
             </div>
         </div>
     )
