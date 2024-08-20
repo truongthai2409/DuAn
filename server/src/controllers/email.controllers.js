@@ -19,8 +19,9 @@ async function getAccessToken() {
         const accessTokenResponse = await oauth2Client.getAccessToken();
         return accessTokenResponse.token;
     } catch (error) {
-        console.error('Failed to get access token', error);
-        throw new Error('Failed to get access token');
+        console.error('Failed to get access token');
+        // console.log(error)
+        return null; // Trả về null nếu không lấy được access token
     }
 }
 
