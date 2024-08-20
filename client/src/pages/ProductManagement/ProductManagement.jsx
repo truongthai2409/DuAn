@@ -38,13 +38,16 @@ const ProductManagement = () => {
 
     const [allProductsSelected, setAllProductsSelected] = useState([]);
 
+    const [restartTable, setRestartTable] = useState(0)
+
     const showModalDelete = () => {
         setIsModalDeleteOpen(true);
     };
     const handleOkDelete = async () => {
         await axios.delete('http://localhost:5000/product/delete-product', {data: {ids: idProduct}})
+        setRestartTable(prev => prev + 1)
+        setCountRowSelected(0)
         setIsModalDeleteOpen(false);
-        window.location.reload();
     };
     const handleCancelDelete = () => {
         setIsModalDeleteOpen(false);
@@ -65,6 +68,8 @@ const ProductManagement = () => {
                 'Content-Type': 'multipart/form-data',
             },
         });
+
+        setRestartTable(prev => prev + 1)
         console.log('Received values of form: ', values);
         setFormValues(values);
         setOpen(false);
@@ -94,10 +99,11 @@ const ProductManagement = () => {
                 'Content-Type': 'multipart/form-data',
             },
         });
+        setCountRowSelected(0)
+        setRestartTable(prev => prev + 1)
         console.log('Received values of form: ', values);
         setFormValues(values);
         setOpenModalUpdate(false);
-        window.location.reload();
     };
 
     const handleDeleteButton = () => {
@@ -124,7 +130,7 @@ const ProductManagement = () => {
             }
         };
         fetchData();
-    }, []);
+    }, [restartTable]);
 
     const optionsProductID = initdataTable.map((item) => ({
         value: item._id,
@@ -337,6 +343,7 @@ const ProductManagement = () => {
             </div>
             <div className="pm-table">
                 <Table
+                    // key={restartTable}
                     rowSelection={{
                         type: "checkbox",
                         ...rowSelection,
