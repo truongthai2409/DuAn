@@ -263,8 +263,6 @@ const OrderManagement = () => {
                 </Row>
                 <Row style={{ paddingTop: 10 }}>
                     <Button type="primary" onClick={handlePrint}  disabled={countRowSelected != 1}>Print Order</Button>
-                    {/* <Button type="primary" style={{ backgroundColor: countRowSelected == 1 ? '#4CAF50' : '', marginLeft: 10 }} disabled={countRowSelected != 1} onClick={onOpenModalUpdate}>Update Product</Button>
-                    <Button type="primary" style={{ marginLeft: 10 }} disabled={countRowSelected == 0} danger onClick={handleDeleteButton}>Detele Product</Button> */}
                 </Row>
             </div>
             <div className="pm-table">

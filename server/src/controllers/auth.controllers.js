@@ -305,3 +305,60 @@ exports.updateShopController = async (req, res) => {
     }
     res.end();
 }
+
+exports.changePasswordController = async (req, res) => {
+    const user = req.user;
+    const { email } = user;
+    const { current_password, new_password } = req.body;
+    try {
+        const updateData = req.body;
+
+        const userUpdate = await User.findOne({ email });
+
+        if (!user) {
+            return res.status(404).json({
+                status: "failed",
+                data: [],
+                message: "User not found",
+            });
+        }
+
+        const isPasswordValid = await bcrypt.compare(
+            current_password,
+            userUpdate.password
+        );
+
+
+        if (!isPasswordValid)
+            return res.status(401).json({
+                status: "failed",
+                data: [],
+                message:
+                    "Invalid password. Please try again with the correct credentials.",
+            });
+
+
+        userUpdate.password = new_password
+        await userUpdate.save()
+
+        // const updatedUser = await User.findByIdAndUpdate(_id, { password: new_password }, { new: true });
+
+        // if (!updatedUser) {
+        //     return res.status(404).json({ message: 'User not found' });
+        // }
+
+        res.status(200).json({
+            status: "success",
+            code: 200,
+            // data: [updatedUser],
+            message: "Update password success"
+        });
+    } catch (err) {
+        res.status(500).json({
+            status: "error",
+            code: 500,
+            message: err,
+        });
+    }
+    res.end();
+}
