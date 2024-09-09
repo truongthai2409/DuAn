@@ -91,6 +91,8 @@ const ProductManagement = () => {
         formData.append('productDescription', values.description || productSelected.productDescription);
         formData.append('inventory', values.inventory || productSelected.inventory);
         if (file) {
+            console.log('file test: ', values.image.file);
+            
             formData.append('image', values.image.file);
         }
 
@@ -102,6 +104,8 @@ const ProductManagement = () => {
         setCountRowSelected(0)
         setRestartTable(prev => prev + 1)
         console.log('Received values of form: ', values);
+        console.log('form data: ', formData);
+        
         setFormValues(values);
         setOpenModalUpdate(false);
     };
@@ -336,9 +340,9 @@ const ProductManagement = () => {
                     </Col>
                 </Row>
                 <Row style={{ paddingTop: 10 }}>
-                    <Button type="primary" onClick={() => setOpen(true)}>Add Product</Button>
-                    <Button type="primary" style={{ backgroundColor: countRowSelected == 1 ? '#4CAF50' : '', marginLeft: 10 }} disabled={countRowSelected != 1} onClick={onOpenModalUpdate}>Update Product</Button>
-                    <Button type="primary" style={{ marginLeft: 10 }} disabled={countRowSelected == 0} danger onClick={handleDeleteButton}>Detele Product</Button>
+                    <Button type="primary" onClick={() => setOpen(true)}>{t('addProductTL')}</Button>
+                    <Button type="primary" style={{ backgroundColor: countRowSelected == 1 ? '#4CAF50' : '', marginLeft: 10 }} disabled={countRowSelected != 1} onClick={onOpenModalUpdate}>{t('updateProductTL')}</Button>
+                    <Button type="primary" style={{ marginLeft: 10 }} disabled={countRowSelected == 0} danger onClick={handleDeleteButton}>{t('deleteProductTL')}</Button>
                 </Row>
             </div>
             <div className="pm-table">

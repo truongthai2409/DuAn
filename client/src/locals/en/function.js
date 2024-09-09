@@ -13,4 +13,7 @@ export const FUNCTION_EN = {
     shippingUnit: 'Shipping Unit',
     typeTL: 'Type',
     levelTL: 'Level',
+    addProductTL: 'Add product',
+    updateProductTL: 'Update product',
+    deleteProductTL: 'Delete product',
 }

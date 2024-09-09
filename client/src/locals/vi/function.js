@@ -13,5 +13,8 @@ export const FUNCTION_VI = {
     shippingUnit: 'Đơn vị vận chuyển',
     typeTL: 'Kiểu khách hàng',
     levelTL: 'Xếp hạng',
+    addProductTL: 'Thêm sản phẩm',
+    updateProductTL: 'Chỉnh sửa sản phẩm',
+    deleteProductTL: 'xóa sản phẩm',
 }
 

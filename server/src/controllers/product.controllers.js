@@ -173,8 +173,16 @@ exports.GetCategoryTreeLazada = async (req, res) => {
 
 exports.updateProductController = async (req, res) => {
     const { _id } = req.body;
+    const { name, price, productDescription, inventory } = req.body;
+    const image = "http://localhost:5000/" + req.file.path;
     try {
-        const updateData = req.body;
+        const updateData = {
+            image,
+            name,
+            price,
+            productDescription,
+            inventory
+        }
 
         const updatedProduct = await Product.findByIdAndUpdate(_id, updateData, { new: true });
 

@@ -207,7 +207,7 @@ const Shop = () => {
             <div className='flex'>
                 <div className='flex-grow-[5]'>
                     <Form
-                        labelCol={{ span: 4 }}
+                        labelCol={{ span: 6 }}
                         wrapperCol={{ span: 14 }}
                         layout="horizontal"
                         size="Default"
@@ -241,7 +241,62 @@ const Shop = () => {
     )
 }
 
+const ChangePassword = () => {
+    const [dataProfile, setDataProfile] = useState({})
 
+    const onFinishShop = async (values) => {
+        try {
+            console.log(values);
+
+            if (values.new_password == values.confirm_password) {
+                await axios.put('http://localhost:5000/auth/change-password', values);
+            }
+            // const res = await axios.put('http://localhost:5000/auth/change-password', values);
+            // console.log(res);
+            // console.log(formData);
+            window.location.reload();
+          } catch (error) {
+            console.error(error);
+          }
+    };
+    const onFinishShopFailed = (errorInfo) => {
+        console.log('Failed:', errorInfo);
+    };
+    return (
+        <>
+            <h2>Change password</h2>
+            <hr className='mt-3 mb-3'></hr>
+            <div className='flex'>
+                <div className='flex-grow-[1]'>
+                    <Form
+                        labelCol={{ span: 6 }}
+                        wrapperCol={{ span: 14 }}
+                        layout="horizontal"
+                        size="Default"
+                        style={{ maxWidth: 600 }}
+                        className='mt-6'
+                        onFinish={onFinishShop}
+                        onFinishFailed={onFinishShopFailed}
+                    >
+                        <Form.Item label="Current password" name="current_password">
+                            <Input />
+                        </Form.Item>
+                        <Form.Item label="New password" name="new_password">
+                            <Input />
+                        </Form.Item>
+                        <Form.Item label="Confirm password" name="confirm_password">
+                            <Input />
+                        </Form.Item>
+                        <Form.Item label="Button">
+                            <Button htmlType='submit' type='primary'>Change Password</Button>
+                        </Form.Item>
+                    </Form>
+                </div>
+            </div>
+
+        </>
+    )
+}
 
 
 const Profile = () => {
@@ -257,6 +312,12 @@ const Profile = () => {
             label: `${t('profileShopTL', { ns: 'profile'})}`,
             key: 2,
             children: <Shop />,
+        },
+        {
+            // label: `${t('profileShopTL', { ns: 'profile'})}`,
+            label: "Change Password",
+            key: 3,
+            children: <ChangePassword />,
         },
     
     ]

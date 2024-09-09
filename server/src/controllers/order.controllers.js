@@ -158,3 +158,7 @@ exports.getAllOrdersController = async (req, res) => {
         res.status(500).send(error.message);
     }
 };
+
+exports.changeOrderStatus = async (req, res) => {
+    
+}

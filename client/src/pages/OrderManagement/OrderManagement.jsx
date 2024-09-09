@@ -13,7 +13,7 @@ const OrderManagement = () => {
     const [filter, setFilter] = useState({
         order_id_lazada: "",
         name_order: "",
-        customer: "",
+        name_customer: "",
         status: "",
         shipping_unit: ""
     });
@@ -102,7 +102,7 @@ const OrderManagement = () => {
     const handleSearch = () => {
         // Lọc theo tất cả các trường có giá trị
         const filteredData = initdataTable.filter((item) => {
-            let isValid = true;
+            let isValid = true;    
             for (const key in filter) {
                 // if (filter[key] && !item[key].includes(filter[key])) {
                 //     isValid = false;
@@ -135,6 +135,21 @@ const OrderManagement = () => {
         });
         setDataTable(initdataTable);
     };
+
+    const optionsStatus = [
+        {value: 'pending', label: 'pending'},
+        {value: 'canceled', label: 'canceled'},
+        {value: 'ready_to_ship', label: 'ready_to_ship'},
+        {value: 'delivered', label: 'delivered'},
+        {value: 'returned', label: 'returned'},
+        {value: 'shipped', label: 'shipped'},
+        {value: 'failed', label: 'failed'}
+    ]
+
+    const handleChangeStatus = () => {
+        
+    }
+
     const columns = [
         {
             title: "ID",
@@ -177,7 +192,14 @@ const OrderManagement = () => {
             title: t('statusTL'),
             dataIndex: "status",
             width: "auto",
-            align: "center"
+            align: "center",
+            render: (text) => {
+                return <Select
+                    onChange={handleChangeStatus}
+                    defaultValue={text}
+                    options={optionsStatus}
+                />
+            }
         },
         {
             title: t('shippingUnit'),

@@ -10,6 +10,8 @@ import { MAIN_EN } from "../locals/en/main";
 import { MAIN_VI } from "../locals/vi/main";
 import { FUNCTION_EN } from "../locals/en/function";
 import { FUNCTION_VI } from "../locals/vi/function";
+import { REGISTER_EN } from "../locals/en/register";
+import { REGISTER_VI } from "../locals/vi/register";
 
 i18n
   .use(initReactI18next) // passes i18n down to react-i18next
@@ -23,12 +25,14 @@ i18n
         profile: PROFILE_EN,
         main: MAIN_EN,
         function: FUNCTION_EN,
+        register: REGISTER_EN,
       },
       vi: {
         login: LOGIN_VI,
         profile: PROFILE_VI,
         main: MAIN_VI,
         function: FUNCTION_VI,
+        register: REGISTER_VI,
       }
     },
     lng: "vi", // if you're using a language detector, do not define the lng option
