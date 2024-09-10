@@ -146,8 +146,15 @@ const OrderManagement = () => {
         {value: 'failed', label: 'failed'}
     ]
 
-    const handleChangeStatus = () => {
-        
+    const handleChangeStatus = async () => {
+        // const formData = new FormData();
+        // formData.append('_id', idProduct[0])
+        // formData.append('name', values.name_product || productSelected.name);
+        // formData.append('price', values.price || productSelected.price);
+        // formData.append('productDescription', values.description || productSelected.productDescription);
+        // formData.append('inventory', values.inventory || productSelected.inventory);
+
+        const respone = await axios.put('http://localhost:5000/product/update-status', formData);
     }
 
     const columns = [
