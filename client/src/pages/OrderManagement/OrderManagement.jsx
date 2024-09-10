@@ -24,6 +24,7 @@ const OrderManagement = () => {
     const [dataProfile, setDataProfile] = useState({})
     const [dataPrint, setDataPrint] = useState({})
     const [countRowSelected, setCountRowSelected] = useState(0)
+    const [orderID, setOrderID] = useState('')
 
     useEffect(() => {
         const fetchData = async () => {
@@ -146,15 +147,10 @@ const OrderManagement = () => {
         {value: 'failed', label: 'failed'}
     ]
 
-    const handleChangeStatus = async () => {
-        // const formData = new FormData();
-        // formData.append('_id', idProduct[0])
-        // formData.append('name', values.name_product || productSelected.name);
-        // formData.append('price', values.price || productSelected.price);
-        // formData.append('productDescription', values.description || productSelected.productDescription);
-        // formData.append('inventory', values.inventory || productSelected.inventory);
-
-        const respone = await axios.put('http://localhost:5000/product/update-status', formData);
+    const handleChangeStatus = async (value, record) => {
+        const respone = await axios.put('http://localhost:5000/order/change-status', {_id: record._id, status: value});
+        // console.log('value: ', value);
+        // console.log('record: ', record);
     }
 
     const columns = [
@@ -200,9 +196,9 @@ const OrderManagement = () => {
             dataIndex: "status",
             width: "auto",
             align: "center",
-            render: (text) => {
+            render: (text, record) => {
                 return <Select
-                    onChange={handleChangeStatus}
+                    onChange={value => handleChangeStatus(value, record)}
                     defaultValue={text}
                     options={optionsStatus}
                 />
